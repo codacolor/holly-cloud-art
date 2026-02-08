@@ -76,8 +76,8 @@
 
         if (!res.ok) throw new Error('Subscription failed');
 
-        form.hidden = true;
-        document.querySelector('.bullets').hidden = true;
+        form.style.display = 'none';
+        document.querySelector('.bullets').style.display = 'none';
         success.hidden = false;
       } catch (err) {
         btn.disabled = false;
