@@ -1,0 +1,7 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/vip"
+  to = "/landing-pages/vip/"
+  status = 200
