@@ -18,6 +18,7 @@ html, body {
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   color: #fff;
+  background: #111;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -201,15 +202,9 @@ body {
   }
 }
 
-/* Hide video on mobile, show poster fallback */
-@media (max-width: 767px) {
-  .bg-video {
-    display: none;
-  }
-
-  .bg {
-    background: url('../../Visual/Video/poster.jpg') center / cover no-repeat;
-  }
+/* Poster fallback behind video in case it loads slowly */
+.bg {
+  background: url('/Visual/Video/poster.jpg') center / cover no-repeat;
 }
 
 /* Respect reduced motion */
@@ -219,6 +214,6 @@ body {
   }
 
   .bg {
-    background: url('../../Visual/Video/poster.jpg') center / cover no-repeat;
+    background: url('/Visual/Video/poster.jpg') center / cover no-repeat;
   }
 }
