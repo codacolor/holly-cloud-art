@@ -168,15 +168,20 @@ body {
 
 .success h2 {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 2rem;
-  font-weight: 400;
-  margin-bottom: 0.75rem;
+  font-size: clamp(2rem, 1.5rem + 3vw, 3.5rem);
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
 
 .success p {
-  font-size: 1rem;
+  font-size: clamp(0.95rem, 0.85rem + 0.5vw, 1.15rem);
+  font-weight: 300;
   color: rgba(255, 255, 255, 0.8);
   line-height: 1.6;
+  max-width: 420px;
 }
 
 /* ---- Mobile adjustments ---- */
