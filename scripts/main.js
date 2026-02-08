@@ -397,29 +397,22 @@
       submitBtn.classList.add('loading');
       submitBtn.disabled = true;
 
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      // TODO: Replace with actual API endpoint
-      // Example implementation:
-      // try {
-      //   const response = await fetch('/api/waitlist', {
-      //     method: 'POST',
-      //     headers: { 'Content-Type': 'application/json' },
-      //     body: JSON.stringify(data)
-      //   });
-      //   if (!response.ok) throw new Error('Submission failed');
-      // } catch (error) {
-      //   alert('Something went wrong. Please try again.');
-      //   submitBtn.classList.remove('loading');
-      //   submitBtn.disabled = false;
-      //   return;
-      // }
-
-      // Log for testing
-      console.log('=== Waitlist Form Submission ===');
-      console.log('Form Data:', JSON.stringify(data, null, 2));
-      console.log('================================');
+      try {
+        const response = await fetch('/.netlify/functions/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: data.firstName,
+            email: data.email,
+          })
+        });
+        if (!response.ok) throw new Error('Submission failed');
+      } catch (error) {
+        alert('Something went wrong. Please try again.');
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+        return;
+      }
 
       // Show success state
       form.style.display = 'none';

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIP Early Access | Holly Di Cecco Cloud Paintings</title>
+  <meta name="description" content="Get 24-hour early access to original cloud paintings by Holly Di Cecco before they're released to the public.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="VIP Early Access | Holly Di Cecco">
+  <meta property="og:description" content="Get 24-hour early access to original cloud paintings before they're released to the public.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="../../images/og-image.jpg">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Video Background -->
+  <div class="bg">
+    <video class="bg-video" autoplay muted loop playsinline poster="../../Visual/Video/poster.jpg">
+      <source src="../../Visual/Video/website-video.mp4" type="video/mp4">
+    </video>
+    <div class="bg-overlay"></div>
+  </div>
+
+  <!-- Capture Card -->
+  <main class="card">
+    <p class="brand">Holly Di Cecco</p>
+    <h1 class="headline">Get Early Access to<br>Original Cloud Paintings</h1>
+    <p class="subheadline">Join the VIP list and be first to see new pieces 24 hours before public release.</p>
+
+    <form class="form" id="capture-form">
+      <input type="text" name="name" placeholder="First name" required autocomplete="given-name">
+      <input type="email" name="email" placeholder="Email address" required autocomplete="email">
+      <button type="submit">Get Early Access</button>
+    </form>
+
+    <ul class="bullets">
+      <li>24-hour early access before public drops</li>
+      <li>First look at new collections</li>
+      <li>No spam, unsubscribe anytime</li>
+    </ul>
+
+    <!-- Success state -->
+    <div class="success" id="success" hidden>
+      <h2>You're on the list.</h2>
+      <p>Watch your inbox for exclusive early access to upcoming collections.</p>
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById('capture-form');
+    const success = document.getElementById('success');
+    const btn = form.querySelector('button');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+
+      try {
+        const res = await fetch('/.netlify/functions/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: form.name.value,
+            email: form.email.value,
+          }),
+        });
+
+        if (!res.ok) throw new Error('Subscription failed');
+
+        form.hidden = true;
+        document.querySelector('.bullets').hidden = true;
+        success.hidden = false;
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Get Early Access';
+        alert('Something went wrong. Please try again.');
+      }
+    });
+  </script>
+</body>
+</html>
