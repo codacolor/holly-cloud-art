@@ -76,6 +76,9 @@
 
         if (!res.ok) throw new Error('Subscription failed');
 
+        document.querySelector('.brand').style.display = 'none';
+        document.querySelector('.headline').style.display = 'none';
+        document.querySelector('.subheadline').style.display = 'none';
         form.style.display = 'none';
         document.querySelector('.bullets').style.display = 'none';
         success.hidden = false;
