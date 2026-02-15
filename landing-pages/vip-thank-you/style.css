@@ -1,0 +1,139 @@
+/* ==========================================================================
+   VIP Thank You - Matches VIP capture page design
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #fff;
+  background: #111;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Full-screen video background ---- */
+
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+.bg-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+/* ---- Centered card ---- */
+
+.card {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 2rem;
+  text-align: center;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.brand {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin-bottom: 1.5rem;
+}
+
+.headline {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2rem, 1.5rem + 3vw, 3.5rem);
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+
+.subheadline {
+  font-size: clamp(0.95rem, 0.85rem + 0.5vw, 1.15rem);
+  font-weight: 300;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 2rem;
+  max-width: 420px;
+}
+
+/* ---- Bullets ---- */
+
+.bullets {
+  list-style: none;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.bullets li::before {
+  content: '\2713';
+  margin-right: 0.5rem;
+  color: #c9a87c;
+}
+
+/* ---- Mobile adjustments ---- */
+
+@media (max-width: 480px) {
+  .card {
+    padding: 1.5rem;
+    justify-content: center;
+  }
+
+  .brand {
+    margin-bottom: 1rem;
+  }
+
+  .subheadline {
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Poster fallback behind video in case it loads slowly */
+.bg {
+  background: url('/Visual/Video/poster.jpg') center / cover no-repeat;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .bg-video {
+    display: none;
+  }
+
+  .bg {
+    background: url('/Visual/Video/poster.jpg') center / cover no-repeat;
+  }
+}

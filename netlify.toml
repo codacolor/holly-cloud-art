@@ -1,7 +1,13 @@
 [build]
   publish = "."
+  functions = "netlify/functions"
 
 [[redirects]]
   from = "/vip"
   to = "/landing-pages/vip/"
+  status = 200
+
+[[redirects]]
+  from = "/vip-thank-you"
+  to = "/landing-pages/vip-thank-you/"
   status = 200
