@@ -3,3 +3,30 @@
 
 # Environment variables
 .env
+
+# Dependencies
+node_modules
+
+# macOS
+.DS_Store
+
+# Claude Code (personal/local)
+.claude/
+CLAUDE.local.md
+
+# Large media
+Visual/Video/*.mov
+Visual/Video/*.mp4
+
+# Temp/prototype files
+.tmp/
+
+# Project docs (not part of the site)
+references/
+
+# Editor
+.vscode/settings.json
+*.swp
+
+# Deno
+deno.lock

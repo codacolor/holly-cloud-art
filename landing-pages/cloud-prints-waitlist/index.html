@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloud Prints Waitlist | Holly Di Cecco</title>
+  <meta name="description" content="Join the waitlist for limited edition cloud prints by Holly Di Cecco. Be first to access museum-quality reproductions of original cloud paintings.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Cloud Prints Waitlist | Holly Di Cecco">
+  <meta property="og:description" content="Limited edition cloud prints. Join the waitlist for exclusive early access to museum-quality reproductions.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="../../images/og-image.jpg">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <a href="../../index.html" class="logo">Holly Di Cecco</a>
+      <h1 class="hero-title">Cloud Prints<br>Coming Soon</h1>
+      <p class="hero-subtitle">Limited edition museum-quality prints of original cloud paintings. Join the waitlist for exclusive early access.</p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="main">
+    <div class="container">
+      <!-- Value Props -->
+      <section class="value-props">
+        <div class="value-prop">
+          <div class="value-prop-icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <rect x="8" y="8" width="32" height="32" rx="2"/>
+              <path d="M8 32l10-10 6 6 8-8 8 8"/>
+              <circle cx="18" cy="18" r="3"/>
+            </svg>
+          </div>
+          <h3 class="value-prop-title">Museum Quality</h3>
+          <p class="value-prop-text">Archival giclée prints on premium cotton rag paper, capturing every nuance of the original paintings.</p>
+        </div>
+        <div class="value-prop">
+          <div class="value-prop-icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M24 4l6 12 13 2-9.5 9 2.5 13L24 34l-12 6 2.5-13L5 18l13-2z"/>
+            </svg>
+          </div>
+          <h3 class="value-prop-title">Limited Editions</h3>
+          <p class="value-prop-text">Each print is part of a strictly limited edition, signed and numbered by Holly.</p>
+        </div>
+        <div class="value-prop">
+          <div class="value-prop-icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <circle cx="24" cy="24" r="20"/>
+              <path d="M24 14v10l7 7"/>
+            </svg>
+          </div>
+          <h3 class="value-prop-title">Early Access</h3>
+          <p class="value-prop-text">Waitlist members get 48-hour early access before prints are released to the public.</p>
+        </div>
+      </section>
+
+      <!-- Signup Form -->
+      <section class="signup-section">
+        <h2 class="signup-title">Join the Waitlist</h2>
+        <p class="signup-description">Be the first to know when cloud prints become available. No spam, just art.</p>
+
+        <form class="signup-form" id="signup-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name" class="form-label">Name</label>
+              <input type="text" id="name" name="name" class="form-input" required autocomplete="name" placeholder="Your name">
+            </div>
+            <div class="form-group">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" id="email" name="email" class="form-input" required autocomplete="email" placeholder="your@email.com">
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <span class="btn-text">Get Early Access</span>
+            <span class="btn-loading" aria-hidden="true">
+              <svg class="spinner" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="30 70"/>
+              </svg>
+            </span>
+          </button>
+          <p class="form-disclaimer">We respect your privacy. Unsubscribe anytime.</p>
+        </form>
+
+        <div class="signup-success" id="signup-success" hidden>
+          <div class="success-icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="24" cy="24" r="20"/>
+              <path d="M14 24l7 7 13-13"/>
+            </svg>
+          </div>
+          <h3 class="success-title">You're on the List</h3>
+          <p class="success-message">We'll let you know as soon as cloud prints are available. Keep an eye on your inbox.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-text">&copy; 2026 Holly Di Cecco. All rights reserved.</p>
+      <a href="../../index.html" class="footer-link">Back to Main Site</a>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="script.js" defer></script>
+</body>
+</html>

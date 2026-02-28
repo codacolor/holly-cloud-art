@@ -1,0 +1,24 @@
+{
+  "name": "20260119-hollys-cloud-lander",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codacolor/holly-cloud-art.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/codacolor/holly-cloud-art/issues"
+  },
+  "homepage": "https://github.com/codacolor/holly-cloud-art#readme",
+  "dependencies": {
+    "square": "^44.0.0"
+  }
+}
