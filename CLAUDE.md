@@ -2,10 +2,10 @@
 
 ## Current Status
 
-Shop prototype live on Netlify (2026-02-27). GitHub collaboration guide written for Cody + Holly — repo cleanup needed before Holly onboards. Production build (8 tasks) still pending. See [references/20260227-checkpoint.md](references/20260227-checkpoint.md) for full context.
+Repo cleaned up and pushed (2026-02-28). Holly (`hollydicecco`) added as GitHub collaborator with write access. Next: clone repo on Holly's Mac at sync meeting, then production shop build (8 tasks). See [references/20260228-checkpoint.md](references/20260228-checkpoint.md) for full context.
 
 ## Overview
-- **Site**: hollycloudart.netlify.app
+- **Site**: hollucinations.com (Netlify, custom domain)
 - **Repo**: github.com/codacolor/holly-cloud-art (branch: master)
 - **Hosting**: Netlify (site ID: d6116a4a-425d-4fde-8ae2-9286c96127d1)
 - **Email**: Kit (ConvertKit) v4 API, form ID 9064377

@@ -7,12 +7,12 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(items => {
             if (items.error) {
                 console.error('Error fetching items:', items.error);
-                shopContainer.innerHTML = '<p>Sorry, unable to load products at this time.</p>';
+                shopContainer.innerHTML = '<p style="text-align:center;padding:2rem;color:#7a7a7a;">Shop is loading soon — check back shortly.</p>';
                 return;
             }
 
             if (items.length === 0) {
-                shopContainer.innerHTML = '<p>No products found.</p>';
+                shopContainer.innerHTML = '<p style="text-align:center;padding:2rem;color:#7a7a7a;">New prints coming soon — join the waitlist for early access.</p>';
                 return;
             }
 
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(err => {
             console.error(err);
-            shopContainer.innerHTML = '<p>Loading failed.</p>';
+            shopContainer.innerHTML = '<p style="text-align:center;padding:2rem;color:#7a7a7a;">Shop is loading soon — check back shortly.</p>';
         });
 });
 
