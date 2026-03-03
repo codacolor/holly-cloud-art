@@ -3,6 +3,11 @@
   functions = "netlify/functions"
 
 [[redirects]]
+  from = "/shop"
+  to = "/shop-prototype.html"
+  status = 200
+
+[[redirects]]
   from = "/vip"
   to = "/landing-pages/vip/"
   status = 200
