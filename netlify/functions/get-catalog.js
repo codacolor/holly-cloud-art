@@ -1,8 +1,8 @@
-const { Client, Environment } = require("square");
+const { SquareClient, SquareEnvironment } = require("square");
 
-const client = new Client({
-    accessToken: process.env.SQUARE_ACCESS_TOKEN,
-    environment: process.env.SQUARE_ENVIRONMENT === 'production' ? Environment.Production : Environment.Sandbox,
+const client = new SquareClient({
+    token: process.env.SQUARE_ACCESS_TOKEN,
+    environment: process.env.SQUARE_ENVIRONMENT === 'production' ? SquareEnvironment.Production : SquareEnvironment.Sandbox,
 });
 
 exports.handler = async (event, context) => {
@@ -11,15 +11,11 @@ exports.handler = async (event, context) => {
     }
 
     try {
-        // Use searchCatalogObjects to get items with images
+        // Use search to get items with images
         // We filter for ITEM type and include related objects (images)
-        const { result } = await client.catalogApi.searchCatalogObjects({
+        const result = await client.catalog.search({
             objectTypes: ["ITEM"],
             includeRelatedObjects: true,
-            query: {
-                // Optional: filter by location if environmental variable is set
-                // itemsForLocationQuery: { locationIds: [process.env.SQUARE_LOCATION_ID] }
-            }
         });
 
         if (!result.objects) {
@@ -44,7 +40,7 @@ exports.handler = async (event, context) => {
             let imageUrl = null;
             if (itemData.imageIds && itemData.imageIds.length > 0) {
                 const imageId = itemData.imageIds[0];
-                const imageObj = result.relatedObjects.find(obj => obj.id === imageId && obj.type === 'IMAGE');
+                const imageObj = (result.relatedObjects || []).find(obj => obj.id === imageId && obj.type === 'IMAGE');
                 if (imageObj) {
                     imageUrl = imageObj.imageData.url;
                 }
