@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Holly Di Cecco — Cloud Prints Shop Prototype</title>
+  <title>Holly Di Cecco — Cloud Prints</title>
 
   <!-- Same fonts as production site -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -93,42 +93,19 @@
     }
 
     /* ==========================================================================
-       View Switcher (prototype only)
+       View Toggle
        ========================================================================== */
-    .proto-switcher {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 999;
-      background: #1a1a1a;
-      color: #fff;
-      padding: 12px 24px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      font-family: var(--font-body);
-      font-size: 13px;
-    }
-    .proto-switcher span { opacity: 0.6; }
-    .proto-switcher button {
-      background: transparent;
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.3);
-      padding: 6px 16px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-family: var(--font-body);
-      font-size: 13px;
-      transition: all 0.2s;
-    }
-    .proto-switcher button:hover { background: rgba(255,255,255,0.1); }
-    .proto-switcher button.active {
-      background: var(--color-cta);
-      border-color: var(--color-cta);
-    }
     .view { display: none; }
     .view.active { display: block; }
+
+    /* Loading / empty states for dynamic shop grid */
+    .shop-loading, .shop-empty {
+      text-align: center;
+      padding: var(--space-xl) 0;
+      color: var(--color-text-muted);
+      font-family: var(--font-heading);
+      font-size: var(--text-xl);
+    }
 
     /* ==========================================================================
        Header (matching production)
@@ -573,82 +550,8 @@
     <!-- Product Grid -->
     <main class="shop-main">
       <div class="container">
-        <div class="shop-grid">
-
-          <!-- Card 1 — dramatic golden clouds, landscape -->
-          <a href="#" class="product-card" onclick="showDetail(this); return false;">
-            <div class="product-card-image landscape">
-              <img class="product-card-img" src="https://images.unsplash.com/photo-1534088568595-a066f410bcda?w=800&q=80" alt="Morning Ascent" data-full="https://images.unsplash.com/photo-1534088568595-a066f410bcda?w=1200&q=85">
-            </div>
-            <div class="product-card-info">
-              <h3 class="product-card-title">Morning Ascent</h3>
-              <p class="product-card-price">$185.00</p>
-              <p class="product-card-edition">Edition of 25</p>
-            </div>
-          </a>
-
-          <!-- Card 2 — towering cumulus, portrait -->
-          <a href="#" class="product-card" onclick="showDetail(this); return false;">
-            <div class="product-card-image portrait">
-              <img class="product-card-img" src="https://images.unsplash.com/photo-1517483000871-1dbf64a6e1c6?w=800&q=80" alt="Cumulus Study IV" data-full="https://images.unsplash.com/photo-1517483000871-1dbf64a6e1c6?w=1200&q=85">
-            </div>
-            <div class="product-card-info">
-              <h3 class="product-card-title">Cumulus Study IV</h3>
-              <p class="product-card-price">$120.00</p>
-              <p class="product-card-edition">Edition of 30</p>
-            </div>
-          </a>
-
-          <!-- Card 3 — sunset glow, wide, SOLD OUT -->
-          <a href="#" class="product-card" onclick="showDetail(this); return false;">
-            <div class="product-card-image wide">
-              <img class="product-card-img" src="https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=800&q=80" alt="Golden Hour" data-full="https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=1200&q=85">
-              <div class="sold-out-badge">Sold Out</div>
-            </div>
-            <div class="product-card-info">
-              <h3 class="product-card-title">Golden Hour</h3>
-              <p class="product-card-price">$240.00</p>
-              <p class="product-card-edition">Edition of 15</p>
-            </div>
-          </a>
-
-          <!-- Card 4 — moody storm clouds, square -->
-          <a href="#" class="product-card" onclick="showDetail(this); return false;">
-            <div class="product-card-image square">
-              <img class="product-card-img" src="https://images.unsplash.com/photo-1501630834273-4b5604d2ee31?w=800&q=80" alt="After the Storm" data-full="https://images.unsplash.com/photo-1501630834273-4b5604d2ee31?w=1200&q=85">
-            </div>
-            <div class="product-card-info">
-              <h3 class="product-card-title">After the Storm</h3>
-              <p class="product-card-price">$160.00</p>
-              <p class="product-card-edition">8 of 20 available</p>
-            </div>
-          </a>
-
-          <!-- Card 5 — soft pastel sky, landscape -->
-          <a href="#" class="product-card" onclick="showDetail(this); return false;">
-            <div class="product-card-image landscape">
-              <img class="product-card-img" src="https://images.unsplash.com/photo-1536244636800-a3f74db0f3cf?w=800&q=80" alt="Drift" data-full="https://images.unsplash.com/photo-1536244636800-a3f74db0f3cf?w=1200&q=85">
-            </div>
-            <div class="product-card-info">
-              <h3 class="product-card-title">Drift</h3>
-              <p class="product-card-price">$145.00</p>
-              <p class="product-card-edition">Edition of 25</p>
-            </div>
-          </a>
-
-          <!-- Card 6 — dramatic vertical clouds, portrait, SOLD OUT -->
-          <a href="#" class="product-card" onclick="showDetail(this); return false;">
-            <div class="product-card-image portrait">
-              <img class="product-card-img" src="https://images.unsplash.com/photo-1513002749550-c59d786b8e6c?w=800&q=80" alt="Horizon Line" data-full="https://images.unsplash.com/photo-1513002749550-c59d786b8e6c?w=1200&q=85">
-              <div class="sold-out-badge">Sold Out</div>
-            </div>
-            <div class="product-card-info">
-              <h3 class="product-card-title">Horizon Line</h3>
-              <p class="product-card-price">$310.00</p>
-              <p class="product-card-edition">Edition of 10</p>
-            </div>
-          </a>
-
+        <div class="shop-grid" id="shop-grid">
+          <p class="shop-loading" id="shop-loading">Loading prints&hellip;</p>
         </div>
       </div>
     </main>
@@ -711,13 +614,12 @@
               <p>"I painted this after watching the clouds lift over the valley one October morning. There was a moment where the light broke through and everything turned gold. I wanted to hold onto that feeling of the world waking up."</p>
             </div>
 
-            <!-- Edition Details -->
-            <h3 class="edition-heading">Edition Details</h3>
+            <!-- Print Details -->
+            <h3 class="edition-heading">Print Details</h3>
             <ul class="edition-list">
-              <li>Edition of 25</li>
-              <li>18" &times; 24"</li>
               <li>Museum-quality archival matte paper</li>
               <li>Archival pigment inks</li>
+              <li>Signed by the artist</li>
             </ul>
 
             <!-- CTA -->
@@ -752,57 +654,151 @@
     </footer>
   </div>
 
-  <!-- View Switcher Script -->
   <script>
-    var artistNotes = {
-      'Morning Ascent': '"I painted this after watching the clouds lift over the valley one October morning. There was a moment where the light broke through and everything turned gold. I wanted to hold onto that feeling of the world waking up."',
-      'Cumulus Study IV': '"This is the fourth in a series where I try to capture the architecture of cumulus clouds — the way they build and tower like cathedrals. Each one is different, but they all share that same quiet grandeur."',
-      'Golden Hour': '"Some evenings the sky just gives you everything. This was one of those nights where the light kept changing every thirty seconds and I was scrambling to mix fast enough to keep up."',
-      'After the Storm': '"There\u2019s a stillness right after a storm passes that I find incredibly moving. The air is clean, the light is soft, and everything feels like it\u2019s exhaling."',
-      'Drift': '"I wanted to paint the feeling of lying in the grass and just watching clouds move. No drama, no golden light — just the slow, quiet drift of an ordinary afternoon."',
-      'Horizon Line': '"This one is about the boundary between earth and sky — that thin line where everything meets. I kept simplifying until there was almost nothing left, and somehow that felt like more."'
-    };
+    /* ==================================================================
+       Shop — Dynamic product loading from Square via Netlify Functions
+       ================================================================== */
 
+    // Currently selected product (set when detail view opens)
+    var currentProduct = null;
+
+    // Format cents to dollars
+    function formatPrice(cents, currency) {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: currency || 'USD'
+      }).format(cents / 100);
+    }
+
+    // Toggle between grid and detail views
     function showView(name) {
-      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-      document.querySelectorAll('.proto-switcher button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
       document.getElementById('view-' + name).classList.add('active');
-      document.querySelector('.proto-switcher button[onclick*="' + name + '"]').classList.add('active');
       window.scrollTo(0, 0);
     }
 
+    // Open product detail view
     function showDetail(card) {
-      var img = card.querySelector('.product-card-img');
+      var id = card.getAttribute('data-item-id');
       var title = card.querySelector('.product-card-title').textContent;
       var price = card.querySelector('.product-card-price').textContent;
-      var edition = card.querySelector('.product-card-edition').textContent;
-      var fullSrc = img.getAttribute('data-full') || img.src;
-      var isSoldOut = !!card.querySelector('.sold-out-badge');
+      var description = card.getAttribute('data-description') || '';
+      var imgEl = card.querySelector('.product-card-img');
+      var imgSrc = imgEl && imgEl.tagName === 'IMG' ? imgEl.src : '';
+
+      currentProduct = { id: id };
 
       var detail = document.getElementById('view-detail');
-      detail.querySelector('.product-image-frame img').src = fullSrc;
-      detail.querySelector('.product-image-frame img').alt = title;
+      var detailImg = detail.querySelector('.product-image-frame img');
+      if (imgSrc) {
+        detailImg.src = imgSrc;
+        detailImg.alt = title;
+        detailImg.style.display = '';
+      } else {
+        detailImg.src = '';
+        detailImg.alt = '';
+        detailImg.style.display = 'none';
+      }
       detail.querySelector('.product-title').textContent = title;
       detail.querySelector('.product-price').textContent = price;
       detail.querySelector('.breadcrumb-current').textContent = title;
-      detail.querySelector('.artist-note p').textContent = artistNotes[title] || '';
-      detail.querySelector('.edition-list li:first-child').textContent = edition;
 
-      var btn = detail.querySelector('.btn-collect');
-      if (isSoldOut) {
-        btn.textContent = 'Sold Out';
-        btn.disabled = true;
-        btn.style.opacity = '0.5';
-        btn.style.cursor = 'not-allowed';
+      // Use Square item description as artist note
+      var noteEl = detail.querySelector('.artist-note p');
+      if (description) {
+        noteEl.textContent = description;
+        noteEl.closest('.artist-note').style.display = '';
       } else {
-        btn.textContent = 'Add to Collection';
-        btn.disabled = false;
-        btn.style.opacity = '';
-        btn.style.cursor = '';
+        noteEl.closest('.artist-note').style.display = 'none';
       }
+
+      // Reset button state
+      var btn = detail.querySelector('.btn-collect');
+      btn.textContent = 'Add to Collection';
+      btn.disabled = false;
+      btn.style.opacity = '';
+      btn.style.cursor = '';
 
       showView('detail');
     }
+
+    // Handle checkout — calls create-checkout function
+    async function handleCheckout() {
+      if (!currentProduct) return;
+      var btn = document.querySelector('#view-detail .btn-collect');
+      var originalText = btn.textContent;
+      btn.textContent = 'Opening checkout…';
+      btn.disabled = true;
+
+      try {
+        var res = await fetch('/.netlify/functions/create-checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ itemId: currentProduct.id })
+        });
+        var data = await res.json();
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          throw new Error(data.error || 'Could not create checkout');
+        }
+      } catch (err) {
+        console.error('Checkout error:', err);
+        btn.textContent = 'Something went wrong — try again';
+        btn.disabled = false;
+        setTimeout(function() { btn.textContent = originalText; }, 3000);
+      }
+    }
+
+    // Wire up checkout button
+    document.querySelector('#view-detail .btn-collect').addEventListener('click', handleCheckout);
+
+    // Fetch products and render cards
+    (async function loadShop() {
+      var grid = document.getElementById('shop-grid');
+      var loading = document.getElementById('shop-loading');
+
+      try {
+        var res = await fetch('/.netlify/functions/get-catalog');
+        if (!res.ok) throw new Error('API returned ' + res.status);
+        var items = await res.json();
+
+        loading.remove();
+
+        if (!items.length) {
+          grid.innerHTML = '<p class="shop-empty">New prints coming soon.</p>';
+          return;
+        }
+
+        items.forEach(function(item) {
+          var card = document.createElement('a');
+          card.href = '#';
+          card.className = 'product-card';
+          card.setAttribute('data-item-id', item.id);
+          card.setAttribute('data-description', item.description || '');
+          card.onclick = function(e) { e.preventDefault(); showDetail(card); };
+
+          card.innerHTML =
+            '<div class="product-card-image">' +
+              (item.imageUrl
+                ? '<img class="product-card-img" src="' + item.imageUrl + '" alt="' + (item.name || '') + '">'
+                : '<div style="width:100%;padding-top:56%;background:linear-gradient(135deg, var(--color-accent-light), var(--color-bg-alt));"></div>') +
+            '</div>' +
+            '<div class="product-card-info">' +
+              '<h3 class="product-card-title">' + (item.name || 'Untitled') + '</h3>' +
+              '<p class="product-card-price">' + formatPrice(item.price, item.currency) + '</p>' +
+              (item.description ? '<p class="product-card-edition">' + item.description + '</p>' : '') +
+            '</div>';
+
+          grid.appendChild(card);
+        });
+
+      } catch (err) {
+        console.error('Failed to load shop:', err);
+        loading.textContent = 'New prints coming soon.';
+        loading.className = 'shop-empty';
+      }
+    })();
   </script>
 
 </body>
