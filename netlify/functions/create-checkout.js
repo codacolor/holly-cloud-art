@@ -56,6 +56,9 @@ exports.handler = async (event, context) => {
 
         const checkoutResult = await client.checkout.paymentLinks.create({
             idempotencyKey: randomUUID(),
+            checkoutOptions: {
+                askForShippingAddress: true
+            },
             order: {
                 locationId: process.env.SQUARE_LOCATION_ID || process.env.SQUARE_APP_ID,
                 lineItems: lineItems
