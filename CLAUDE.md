@@ -54,6 +54,15 @@ Visual/Video/poster.jpg       # Video poster frame
 - **Netlify deploy queue**: Deploys can get stuck. Use `netlify api cancelSiteDeploy` to clear.
 - **iOS video autoplay**: Requires `autoplay muted loop playsinline` attributes.
 
+## Deployment
+
+- **Holly's site**: `holly-cloud-art.netlify.app` (site ID: `ecd5295f-827e-45bf-9ad2-8e1f9bae20f0`) — deploy anytime with:
+  `netlify deploy --prod --site ecd5295f-827e-45bf-9ad2-8e1f9bae20f0 --dir .`
+- **Cody's site**: `hollycloudart.netlify.app` — auto-deploys from GitHub push to `codacolor/holly-cloud-art` master (webhook may need Cody to fix)
+- Both sites point to the same repo/code; Holly's is the reliable deploy path
+
 ## Learned Conventions
 
-_(Populated by self-annealing as patterns are discovered.)_
+- **Square shipping**: Flat rates in Square Dashboard → Online → Shipping apply to Square Online only, NOT API payment links. Use `checkoutOptions: { askForShippingAddress: true }` in `create-checkout.js` to collect address; shipping rates must be line items if needed programmatically.
+- **Square coupons**: Coupons from Square Online don't apply to API-generated payment links. For testing, use sandbox credentials + test cards.
+- **Netlify dev working directory**: `netlify dev` must run from the site folder, not workspace root. launch.json uses `bash -c "cd '...' && netlify dev"` to ensure correct directory.
