@@ -955,6 +955,50 @@
       text-align: center;
       font-style: italic;
     }
+    .cart-shipping-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-sm);
+    }
+    .cart-shipping-label {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .cart-shipping-select {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      color: var(--color-text);
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: var(--space-sm);
+      padding-top: var(--space-xs);
+      border-top: 1px solid var(--color-border);
+    }
+    .cart-total-label {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--color-text);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .cart-total-amount {
+      font-family: var(--font-heading);
+      font-size: var(--text-xl);
+      color: var(--color-text);
+    }
   </style>
 </head>
 
@@ -1159,6 +1203,15 @@
        Cart State
        ------------------------------------------------------------------ */
     var cart = [];
+    var cartShippingZone = 'us'; // 'us' or 'intl'
+    var SHIPPING_RATES = {
+      us:   { cents: 800,  label: 'United States — $8.00' },
+      intl: { cents: 2200, label: 'International — $22.00' }
+    };
+    function cartSetShippingZone(zone) {
+      cartShippingZone = zone;
+      renderCartDrawer();
+    }
 
     function cartAdd(item) {
       var existing = cart.find(function(c) { return c.variationId === item.variationId; });
@@ -1236,10 +1289,24 @@
         );
       }).join('');
 
+      var shipping = SHIPPING_RATES[cartShippingZone];
+      var totalCents = cartTotal() + shipping.cents;
+
       footer.innerHTML =
         '<div class="cart-subtotal">' +
           '<span class="cart-subtotal-label">Subtotal</span>' +
           '<span class="cart-subtotal-amount">' + formatPrice(cartTotal(), 'USD') + '</span>' +
+        '</div>' +
+        '<div class="cart-shipping-row">' +
+          '<span class="cart-shipping-label">Shipping to</span>' +
+          '<select class="cart-shipping-select" onchange="cartSetShippingZone(this.value)">' +
+            '<option value="us"' + (cartShippingZone === 'us' ? ' selected' : '') + '>United States — $8.00</option>' +
+            '<option value="intl"' + (cartShippingZone === 'intl' ? ' selected' : '') + '>International — $22.00</option>' +
+          '</select>' +
+        '</div>' +
+        '<div class="cart-total-row">' +
+          '<span class="cart-total-label">Total</span>' +
+          '<span class="cart-total-amount">' + formatPrice(totalCents, 'USD') + '</span>' +
         '</div>' +
         '<button class="cart-checkout-btn" id="cart-checkout-btn" onclick="handleCartCheckout()">Proceed to Pay</button>' +
         '<p class="cart-footer-note">Ships within 3&ndash;4 weeks.</p>';
@@ -1516,7 +1583,7 @@
         var res = await fetch('/.netlify/functions/create-checkout', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ lineItems: lineItems })
+          body: JSON.stringify({ lineItems: lineItems, shippingZone: cartShippingZone })
         });
         var data = await res.json();
         if (data.url) {

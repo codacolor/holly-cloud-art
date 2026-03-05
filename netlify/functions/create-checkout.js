@@ -43,11 +43,19 @@ exports.handler = async (event, context) => {
             lineItems = [{ quantity: String(quantity), catalogObjectId: variationId }];
         }
 
+        const SHIPPING_FEES = {
+            us:   { amount: BigInt(800),  currency: 'USD', name: 'Shipping (United States)' },
+            intl: { amount: BigInt(2200), currency: 'USD', name: 'Shipping (International)' }
+        };
+        const fee = SHIPPING_FEES[data.shippingZone] || SHIPPING_FEES.us;
+        lineItems.push({
+            name: fee.name,
+            quantity: '1',
+            basePriceMoney: { amount: fee.amount, currency: fee.currency }
+        });
+
         const checkoutResult = await client.checkout.paymentLinks.create({
             idempotencyKey: randomUUID(),
-            checkoutOptions: {
-                askForShippingAddress: true
-            },
             order: {
                 locationId: process.env.SQUARE_LOCATION_ID || process.env.SQUARE_APP_ID,
                 lineItems: lineItems
