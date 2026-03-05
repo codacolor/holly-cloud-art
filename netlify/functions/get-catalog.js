@@ -46,12 +46,34 @@ exports.handler = async (event, context) => {
                 }
             }
 
+            // Resolve category name from related objects
+            let categoryName = null;
+            const catId = (itemData.reportingCategory && itemData.reportingCategory.id) || itemData.categoryId;
+            if (catId) {
+                const catObj = (result.relatedObjects || []).find(function(obj) {
+                    return obj.id === catId && obj.type === 'CATEGORY';
+                });
+                if (catObj && catObj.categoryData) categoryName = catObj.categoryData.name || null;
+            }
+
+            // All variations (sizes)
+            const variations = itemData.variations.map(function(v) {
+                let vPrice = 0, vCurrency = 'USD';
+                if (v.itemVariationData.priceMoney) {
+                    vPrice = Number(v.itemVariationData.priceMoney.amount);
+                    vCurrency = v.itemVariationData.priceMoney.currency;
+                }
+                return { id: v.id, name: v.itemVariationData.name, price: vPrice, currency: vCurrency };
+            });
+
             return {
                 id: item.id,
-                variationId: variation.id, // Good for checkout
+                variationId: variation.id, // First variation (default)
+                variations: variations,
                 name: itemData.name,
                 description: itemData.description,
-                price: price, // In cents
+                categoryName: categoryName,
+                price: price, // First variation price, in cents
                 currency: currency,
                 imageUrl: imageUrl
             };

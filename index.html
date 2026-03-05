@@ -157,19 +157,70 @@
     .nav-cta:hover { background-color: var(--color-cta-hover) !important; }
 
     /* ==========================================================================
+       Cloud Atmosphere — spans originals + prints, fades in/out at edges only
+       ========================================================================== */
+    .cloud-atmosphere-wrap {
+      position: relative;
+      isolation: isolate;
+      /* Toned-down warm beige — gentle warmth, not too golden */
+      background-color: rgb(247, 241, 232);
+    }
+
+    /* Top cloud: tall + slow fade so it whispers into the middle of the page */
+    .cloud-atmosphere-wrap::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1200px;
+      pointer-events: none;
+      z-index: -1;
+      background-image:
+        linear-gradient(to bottom,
+          rgba(247,241,232,0)    0%,
+          rgba(247,241,232,0.35) 18%,
+          rgba(247,241,232,0.82) 42%,
+          rgba(247,241,232,1)    58%
+        ),
+        url('https://images.unsplash.com/photo-1534088568595-a066f410bcda?w=1600&q=80');
+      background-size: cover;
+      background-position: center top;
+    }
+
+    /* Bottom cloud: tall + slow fade, warm peach tint to soften the dark clouds */
+    .cloud-atmosphere-wrap::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1200px;
+      pointer-events: none;
+      z-index: -1;
+      background-image:
+        linear-gradient(to bottom,
+          rgba(247,241,232,1)    0%,
+          rgba(247,241,232,0.82) 28%,
+          rgba(247,241,232,0.45) 55%,
+          rgba(247,241,232,0.12) 75%,
+          rgba(247,241,232,0)    88%
+        ),
+        linear-gradient(to top,
+          rgba(255,190,110,0.5)  0%,
+          rgba(255,190,110,0.2)  40%,
+          rgba(255,190,110,0)    70%
+        ),
+        url('https://images.unsplash.com/photo-1534088568595-a066f410bcda?w=1600&q=80');
+      background-size: cover;
+      background-position: center bottom;
+    }
+
+    .originals-section { /* structural only */ }
+
+    /* ==========================================================================
        Shop Hero — atmospheric cloud banner
        ========================================================================== */
     .shop-hero {
       position: relative;
       padding: var(--space-xl) 0 var(--space-lg);
       text-align: center;
-      overflow: hidden;
-      /* Cloud painting close-up as background */
-      background-image:
-        linear-gradient(180deg, rgba(245,243,240,0.15) 0%, rgba(245,243,240,0.6) 50%, rgba(245,243,240,1) 100%),
-        url('https://images.unsplash.com/photo-1534088568595-a066f410bcda?w=1600&q=80');
-      background-size: cover;
-      background-position: center 40%;
       min-height: 280px;
       display: flex;
       align-items: center;
@@ -204,10 +255,10 @@
       margin-top: var(--space-md);
     }
     .shop-hero-artist-portrait {
-      width: 44px;
-      height: 44px;
+      width: 61px;
+      height: 61px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #d4c4b0, #c9a87c);
+      object-fit: cover;
       flex-shrink: 0;
       border: 2px solid rgba(255,255,255,0.6);
     }
@@ -222,6 +273,30 @@
       font-size: var(--text-base);
       color: var(--color-text);
       font-weight: 500;
+    }
+
+    /* ==========================================================================
+       Section Hero (Prints — secondary, below originals grid)
+       ========================================================================== */
+    .shop-section-hero {
+      text-align: center;
+      padding: var(--space-xl) 0 var(--space-md);
+      background: transparent;
+    }
+    .shop-section-title {
+      font-family: var(--font-heading);
+      font-size: var(--text-3xl);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-xs);
+      color: var(--color-text);
+    }
+    .shop-section-subtitle {
+      font-size: var(--text-lg);
+      font-weight: 300;
+      color: var(--color-text-light);
+      max-width: 480px;
+      margin: 0 auto;
     }
 
     /* ==========================================================================
@@ -321,6 +396,16 @@
       color: var(--color-text-muted);
       font-style: italic;
     }
+    .product-card-description {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      line-height: 1.5;
+      margin-top: 4px;
+    }
+    .product-card-description + .product-card-description {
+      margin-top: 10px;
+    }
 
     /* ==========================================================================
        Product Detail Page
@@ -362,15 +447,91 @@
       top: calc(72px + var(--space-md)); /* header + spacing */
     }
     .product-image-frame {
+      position: relative;
       width: 100%;
       border-radius: var(--radius-md);
       box-shadow: var(--shadow-xl);
       overflow: hidden;
+      cursor: zoom-in;
     }
     .product-image-frame img {
       width: 100%;
       height: auto;
       display: block;
+    }
+    .product-image-frame::after {
+      content: 'Zoom';
+      position: absolute;
+      bottom: 0.75rem;
+      right: 0.75rem;
+      background: rgba(0, 0, 0, 0.45);
+      color: rgba(255, 255, 255, 0.9);
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 20px;
+      backdrop-filter: blur(6px);
+      opacity: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
+    }
+    .product-image-frame:hover::after { opacity: 1; }
+
+    /* ==========================================================================
+       Zoom Modal
+       ========================================================================== */
+    .zoom-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: rgba(8, 8, 8, 0.93);
+    }
+    .zoom-modal.open { display: block; }
+    .zoom-modal-img {
+      position: absolute;
+      transform-origin: 0 0;
+      user-select: none;
+      -webkit-user-drag: none;
+      max-width: none;
+    }
+    .zoom-modal-img.can-drag { cursor: grab; }
+    .zoom-modal-img.dragging  { cursor: grabbing; transition: none !important; }
+    .zoom-close-btn {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: rgba(255, 255, 255, 0.9);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(8px);
+      transition: background 0.2s;
+    }
+    .zoom-close-btn:hover { background: rgba(255, 255, 255, 0.22); }
+    .zoom-hint {
+      position: absolute;
+      bottom: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255, 255, 255, 0.35);
+      font-family: var(--font-body);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      pointer-events: none;
+      white-space: nowrap;
     }
 
     .product-info {
@@ -402,6 +563,40 @@
       font-style: italic;
       line-height: 1.7;
       color: var(--color-text);
+    }
+
+    /* Variant size picker */
+    .variant-heading {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-xs);
+    }
+    .variant-picker {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: var(--space-md);
+    }
+    .variant-btn {
+      padding: 7px 18px;
+      border: 1px solid var(--color-border);
+      background: var(--color-white);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      color: var(--color-text);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .variant-btn:hover { border-color: var(--color-text-light); }
+    .variant-btn.selected {
+      border-color: var(--color-text);
+      background: var(--color-text);
+      color: var(--color-white);
     }
 
     .edition-heading {
@@ -530,31 +725,50 @@
       </nav>
     </header>
 
+    <!-- Single cloud atmosphere wraps originals + prints -->
+    <div class="cloud-atmosphere-wrap">
+
+    <!-- Cloud Originals — hero + grid -->
+    <div class="originals-section">
+
     <!-- Shop Hero — atmospheric cloud banner -->
     <section class="shop-hero">
       <div class="shop-hero-inner">
-        <h1 class="shop-hero-title">Cloud Prints</h1>
-        <p class="shop-hero-subtitle">Limited edition archival prints capturing moments of atmospheric wonder.</p>
+        <h1 class="shop-hero-title">Cloud Originals</h1>
 
-        <!-- Brief artist context for cold ad traffic -->
         <div class="shop-hero-artist">
-          <div class="shop-hero-artist-portrait"></div>
+          <img src="Visual/holly-profile.jpeg" alt="Holly Di Cecco" class="shop-hero-artist-portrait">
           <div class="shop-hero-artist-text">
-            <div class="shop-hero-artist-name">Holly Di Cecco</div>
-            Original cloud paintings from the Pacific Northwest
+            <div class="shop-hero-artist-name">By Holly Di Cecco</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Product Grid -->
+    <!-- Originals Grid -->
     <main class="shop-main">
       <div class="container">
-        <div class="shop-grid" id="shop-grid">
-          <p class="shop-loading" id="shop-loading">Loading prints&hellip;</p>
+        <div class="shop-grid" id="originals-grid">
+          <p class="shop-loading" id="originals-loading">Loading&hellip;</p>
         </div>
       </div>
     </main>
+
+    </div><!-- /.originals-section -->
+
+    <!-- Cloud Prints Section -->
+    <section class="shop-section-hero">
+      <h2 class="shop-section-title">Cloud Prints</h2>
+    </section>
+
+    <!-- Prints Grid -->
+    <div class="shop-main">
+      <div class="container">
+        <div class="shop-grid" id="prints-grid"></div>
+      </div>
+    </div>
+
+    </div><!-- /.cloud-atmosphere-wrap -->
 
     <!-- Footer -->
     <footer class="footer">
@@ -589,7 +803,7 @@
 
         <!-- Breadcrumb -->
         <div class="breadcrumb">
-          <a href="#" onclick="showView('grid'); return false;">Cloud Prints</a>
+          <a href="#" id="breadcrumb-back" onclick="showView('grid'); return false;">Shop</a>
           <span class="breadcrumb-sep">/</span>
           <span class="breadcrumb-current">Morning Ascent</span>
         </div>
@@ -609,6 +823,12 @@
             <h1 class="product-title">Morning Ascent</h1>
             <p class="product-price">$185.00</p>
 
+            <!-- Size variants (populated by JS) -->
+            <div id="variant-section" style="display:none;">
+              <p class="variant-heading">Size</p>
+              <div class="variant-picker" id="variant-picker"></div>
+            </div>
+
             <!-- Artist's Note -->
             <div class="artist-note">
               <p>"I painted this after watching the clouds lift over the valley one October morning. There was a moment where the light broke through and everything turned gold. I wanted to hold onto that feeling of the world waking up."</p>
@@ -617,14 +837,14 @@
             <!-- Print Details -->
             <h3 class="edition-heading">Print Details</h3>
             <ul class="edition-list">
-              <li>Museum-quality archival matte paper</li>
-              <li>Archival pigment inks</li>
-              <li>Signed by the artist</li>
+              <li>Ultra-detailed archival print quality</li>
+              <li>Matte finish</li>
+              <li>Signed and numbered by the artist</li>
             </ul>
 
             <!-- CTA -->
             <button class="btn-collect">Add to Collection</button>
-            <p class="product-disclaimer">Signed and numbered by the artist. Ships within 2&ndash;3 weeks.</p>
+            <p class="product-disclaimer">Ships within 3&ndash;4 weeks.</p>
 
           </div>
         </div>
@@ -654,6 +874,13 @@
     </footer>
   </div>
 
+  <!-- Zoom Modal -->
+  <div id="zoom-modal" class="zoom-modal" role="dialog" aria-modal="true" aria-label="Image zoom">
+    <button class="zoom-close-btn" id="zoom-close" aria-label="Close zoom">✕</button>
+    <img id="zoom-img" class="zoom-modal-img" src="" alt="">
+    <p class="zoom-hint">Scroll to zoom &nbsp;·&nbsp; Drag to pan &nbsp;·&nbsp; Esc to close</p>
+  </div>
+
   <script>
     /* ==================================================================
        Shop — Dynamic product loading from Square via Netlify Functions
@@ -677,16 +904,96 @@
       window.scrollTo(0, 0);
     }
 
+    // Split description into sentences, keeping "9x12 in. oil..." as one sentence.
+    // Normalizes line breaks / non-breaking spaces so Square's newline-separated
+    // descriptions split correctly. Also normalises "board" → "panel".
+    function splitSentences(text) {
+      if (!text) return [];
+      // Normalise: any period followed by whitespace (newline, NBSP, etc.) → ". "
+      // Also canonicalise "canvas board" → "canvas panel"
+      var normalised = text.trim()
+        .replace(/\.\s+/g, '. ')
+        .replace(/\bboard\b/gi, 'panel')
+        // Insert a sentence break before dimension patterns (e.g. "8×10 in.", "9x12 in.")
+        // when not already preceded by a period
+        .replace(/([^.])\s+(\d+[×xX]\d+\s+in\.)/g, '$1. $2');
+      var parts = normalised.split('. ');
+      var result = [];
+      var current = parts[0];
+      for (var i = 1; i < parts.length; i++) {
+        if (/^[a-z]/.test(parts[i])) {
+          current += '. ' + parts[i]; // lowercase start → same sentence (e.g. "in. oil")
+        } else {
+          result.push(current + '.');
+          current = parts[i];
+        }
+      }
+      result.push(/\.$/.test(current) ? current : current + '.');
+      return result;
+    }
+
+    // Classify an item as an original (by category name or item name)
+    function isOriginal(item) {
+      var catMatch = item.categoryName && item.categoryName.toLowerCase().includes('original');
+      var nameMatch = item.name && item.name.toLowerCase().includes('original');
+      return catMatch || nameMatch;
+    }
+
+    // Build a product card element
+    function buildCard(item, section) {
+      var card = document.createElement('a');
+      card.href = '#';
+      card.className = 'product-card';
+      card.setAttribute('data-item-id', item.id);
+      card.setAttribute('data-description', item.description || '');
+      card.setAttribute('data-section', section);
+      card.setAttribute('data-variants', JSON.stringify(item.variations || []));
+      card.onclick = function(e) { e.preventDefault(); showDetail(card); };
+
+      var infoHtml = '<h3 class="product-card-title">' + (item.name || 'Untitled') + '</h3>';
+      if (item.description) {
+        if (section === 'originals') {
+          var sentences = splitSentences(item.description);
+          // Show artistic sentence + size/medium line only
+          infoHtml += '<p class="product-card-description">' + sentences[0] + '</p>';
+          if (sentences[1]) {
+            infoHtml += '<p class="product-card-description">' + sentences[1] + '</p>';
+          }
+        } else {
+          infoHtml += '<p class="product-card-description">' + item.description + '</p>';
+        }
+      }
+      if (section === 'originals' && item.price) {
+        infoHtml += '<p class="product-card-price">' + formatPrice(item.price, item.currency) + '</p>';
+      }
+
+      card.innerHTML =
+        '<div class="product-card-image">' +
+          (item.imageUrl
+            ? '<img class="product-card-img" src="' + item.imageUrl + '" alt="' + (item.name || '') + '">'
+            : '<div style="width:100%;padding-top:56%;background:linear-gradient(135deg, var(--color-accent-light), var(--color-bg-alt));"></div>') +
+        '</div>' +
+        '<div class="product-card-info">' + infoHtml + '</div>';
+
+      return card;
+    }
+
     // Open product detail view
     function showDetail(card) {
       var id = card.getAttribute('data-item-id');
       var title = card.querySelector('.product-card-title').textContent;
-      var price = card.querySelector('.product-card-price').textContent;
       var description = card.getAttribute('data-description') || '';
+      var section = card.getAttribute('data-section') || 'originals';
       var imgEl = card.querySelector('.product-card-img');
       var imgSrc = imgEl && imgEl.tagName === 'IMG' ? imgEl.src : '';
+      var variants = [];
+      try { variants = JSON.parse(card.getAttribute('data-variants') || '[]'); } catch(e) {}
 
-      currentProduct = { id: id };
+      var initialPrice = variants.length && variants[0].price
+        ? formatPrice(variants[0].price, variants[0].currency)
+        : '';
+
+      currentProduct = { id: id, variationId: variants.length ? variants[0].id : null };
 
       var detail = document.getElementById('view-detail');
       var detailImg = detail.querySelector('.product-image-frame img');
@@ -700,16 +1007,66 @@
         detailImg.style.display = 'none';
       }
       detail.querySelector('.product-title').textContent = title;
-      detail.querySelector('.product-price').textContent = price;
+      detail.querySelector('.product-price').textContent = initialPrice;
       detail.querySelector('.breadcrumb-current').textContent = title;
+      document.getElementById('breadcrumb-back').textContent =
+        section === 'originals' ? 'Cloud Originals' : 'Cloud Prints';
 
-      // Use Square item description as artist note
+      // Artist note + edition list
       var noteEl = detail.querySelector('.artist-note p');
-      if (description) {
+      var editionHeading = detail.querySelector('.edition-heading');
+      var editionList = detail.querySelector('.edition-list');
+
+      if (section === 'originals' && description) {
+        var sentences = splitSentences(description);
+        // First sentence = artistic description (artist note)
+        noteEl.textContent = sentences[0];
+        noteEl.closest('.artist-note').style.display = '';
+        // Remaining sentences = item-specific details
+        editionHeading.textContent = 'Original Details';
+        editionList.innerHTML = sentences.slice(1).map(function(s) {
+          return '<li>' + s + '</li>';
+        }).join('');
+      } else if (description) {
         noteEl.textContent = description;
         noteEl.closest('.artist-note').style.display = '';
+        editionHeading.textContent = 'Print Details';
+        editionList.innerHTML =
+          '<li>Ultra-detailed archival print quality</li>' +
+          '<li>Matte finish</li>' +
+          '<li>Signed and numbered by the artist</li>';
       } else {
         noteEl.closest('.artist-note').style.display = 'none';
+        editionHeading.textContent = 'Print Details';
+        editionList.innerHTML =
+          '<li>Ultra-detailed archival print quality</li>' +
+          '<li>Matte finish</li>' +
+          '<li>Signed and numbered by the artist</li>';
+      }
+
+      // Size variant picker
+      var varSection = detail.querySelector('#variant-section');
+      var varPicker = detail.querySelector('#variant-picker');
+      varPicker.innerHTML = '';
+      if (variants.length > 1) {
+        varSection.style.display = '';
+        variants.forEach(function(v, i) {
+          var btn = document.createElement('button');
+          btn.className = 'variant-btn' + (i === 0 ? ' selected' : '');
+          btn.textContent = v.name;
+          btn.setAttribute('data-variation-id', v.id);
+          btn.setAttribute('data-price', v.price);
+          btn.setAttribute('data-currency', v.currency || 'USD');
+          btn.addEventListener('click', function() {
+            varPicker.querySelectorAll('.variant-btn').forEach(function(b) { b.classList.remove('selected'); });
+            btn.classList.add('selected');
+            detail.querySelector('.product-price').textContent = formatPrice(Number(btn.getAttribute('data-price')), btn.getAttribute('data-currency'));
+            currentProduct.variationId = btn.getAttribute('data-variation-id');
+          });
+          varPicker.appendChild(btn);
+        });
+      } else {
+        varSection.style.display = 'none';
       }
 
       // Reset button state
@@ -734,7 +1091,7 @@
         var res = await fetch('/.netlify/functions/create-checkout', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ itemId: currentProduct.id })
+          body: JSON.stringify({ variationId: currentProduct.variationId, itemId: currentProduct.id })
         });
         var data = await res.json();
         if (data.url) {
@@ -753,50 +1110,209 @@
     // Wire up checkout button
     document.querySelector('#view-detail .btn-collect').addEventListener('click', handleCheckout);
 
-    // Fetch products and render cards
+    /* ------------------------------------------------------------------
+       Zoom Modal — scroll to zoom, drag to pan, Esc/click bg to close
+       ------------------------------------------------------------------ */
+    (function() {
+      var modal  = document.getElementById('zoom-modal');
+      var zImg   = document.getElementById('zoom-img');
+      var closeBtn = document.getElementById('zoom-close');
+
+      var scale = 1, tx = 0, ty = 0;
+      var MIN_SCALE = 1, MAX_SCALE = 6;
+      var dragging = false, lastMX, lastMY;
+      var lastTouchDist = 0, lastTouchMX, lastTouchMY;
+
+      function applyTransform(animate) {
+        zImg.style.transition = animate ? 'transform 0.15s ease-out' : 'none';
+        zImg.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')';
+      }
+
+      // Zoom towards viewport point (mx, my)
+      function zoomAt(mx, my, newScale) {
+        newScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, newScale));
+        if (newScale === scale) return;
+        // With transform-origin:0,0 and image positioned at (imgLeft, imgTop):
+        // viewport point in image-local coords = (mx - imgLeft - tx) / scale
+        var px = (mx - tx) / scale;
+        var py = (my - ty) / scale;
+        tx = mx - px * newScale;
+        ty = my - py * newScale;
+        // Clamp so image can't wander off screen when scale resets
+        if (newScale <= MIN_SCALE) { tx = initTX; ty = initTY; }
+        scale = newScale;
+        applyTransform(false);
+        zImg.classList.toggle('can-drag', scale > MIN_SCALE);
+      }
+
+      // Initial position: centered in viewport
+      var initTX = 0, initTY = 0;
+
+      function openZoom(src, alt) {
+        zImg.src = src;
+        zImg.alt = alt || '';
+        modal.classList.add('open');
+        scale = 1; tx = 0; ty = 0;
+        zImg.classList.remove('can-drag', 'dragging');
+
+        // Once image loads, center it
+        function center() {
+          var vw = window.innerWidth, vh = window.innerHeight;
+          var iw = zImg.naturalWidth, ih = zImg.naturalHeight;
+          // Fit to viewport with padding
+          var maxW = vw * 0.9, maxH = vh * 0.9;
+          var ratio = Math.min(maxW / iw, maxH / ih, 1);
+          var rw = iw * ratio, rh = ih * ratio;
+          zImg.style.width  = rw + 'px';
+          zImg.style.height = rh + 'px';
+          initTX = (vw - rw) / 2;
+          initTY = (vh - rh) / 2;
+          tx = initTX; ty = initTY;
+          applyTransform(false);
+        }
+
+        if (zImg.complete && zImg.naturalWidth) {
+          center();
+        } else {
+          zImg.onload = center;
+        }
+      }
+
+      function closeZoom() {
+        modal.classList.remove('open');
+        zImg.src = '';
+      }
+
+      // Open when product image is clicked
+      document.querySelector('.product-image-frame').addEventListener('click', function() {
+        var img = document.querySelector('.product-image-frame img');
+        if (img && img.src) openZoom(img.src, img.alt);
+      });
+
+      // Close button
+      closeBtn.addEventListener('click', closeZoom);
+
+      // Click backdrop to close (not the image)
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeZoom();
+      });
+
+      // Escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('open')) closeZoom();
+      });
+
+      // Scroll to zoom
+      modal.addEventListener('wheel', function(e) {
+        e.preventDefault();
+        var delta = e.deltaY < 0 ? 1.12 : 0.9;
+        zoomAt(e.clientX, e.clientY, scale * delta);
+      }, { passive: false });
+
+      // Mouse drag
+      zImg.addEventListener('mousedown', function(e) {
+        if (scale <= MIN_SCALE) return;
+        dragging = true;
+        lastMX = e.clientX; lastMY = e.clientY;
+        zImg.classList.add('dragging');
+        e.preventDefault();
+      });
+      window.addEventListener('mousemove', function(e) {
+        if (!dragging) return;
+        tx += e.clientX - lastMX;
+        ty += e.clientY - lastMY;
+        lastMX = e.clientX; lastMY = e.clientY;
+        applyTransform(false);
+      });
+      window.addEventListener('mouseup', function() {
+        dragging = false;
+        zImg.classList.remove('dragging');
+      });
+
+      // Double-click to zoom in / reset
+      zImg.addEventListener('dblclick', function(e) {
+        if (scale > MIN_SCALE) {
+          scale = MIN_SCALE; tx = initTX; ty = initTY;
+          applyTransform(true);
+          zImg.classList.remove('can-drag');
+        } else {
+          zoomAt(e.clientX, e.clientY, 2.5);
+        }
+      });
+
+      // Touch: pinch to zoom + single-finger pan
+      modal.addEventListener('touchstart', function(e) {
+        if (e.touches.length === 2) {
+          lastTouchDist = Math.hypot(
+            e.touches[1].clientX - e.touches[0].clientX,
+            e.touches[1].clientY - e.touches[0].clientY
+          );
+          lastTouchMX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+          lastTouchMY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+        } else if (e.touches.length === 1 && scale > MIN_SCALE) {
+          lastMX = e.touches[0].clientX;
+          lastMY = e.touches[0].clientY;
+        }
+      }, { passive: true });
+      modal.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+        if (e.touches.length === 2) {
+          var dist = Math.hypot(
+            e.touches[1].clientX - e.touches[0].clientX,
+            e.touches[1].clientY - e.touches[0].clientY
+          );
+          var midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+          var midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+          zoomAt(midX, midY, scale * (dist / lastTouchDist));
+          lastTouchDist = dist;
+        } else if (e.touches.length === 1 && scale > MIN_SCALE) {
+          tx += e.touches[0].clientX - lastMX;
+          ty += e.touches[0].clientY - lastMY;
+          lastMX = e.touches[0].clientX;
+          lastMY = e.touches[0].clientY;
+          applyTransform(false);
+        }
+      }, { passive: false });
+    })();
+
+    // Fetch products and split into originals / prints grids
     (async function loadShop() {
-      var grid = document.getElementById('shop-grid');
-      var loading = document.getElementById('shop-loading');
+      var originalsGrid = document.getElementById('originals-grid');
+      var originalsLoading = document.getElementById('originals-loading');
+      var printsGrid = document.getElementById('prints-grid');
 
       try {
         var res = await fetch('/.netlify/functions/get-catalog');
         if (!res.ok) throw new Error('API returned ' + res.status);
         var items = await res.json();
 
-        loading.remove();
+        originalsLoading.remove();
 
-        if (!items.length) {
-          grid.innerHTML = '<p class="shop-empty">New prints coming soon.</p>';
-          return;
+        var originals = items.filter(isOriginal);
+        var prints = items.filter(function(item) { return !isOriginal(item); });
+
+        if (!originals.length) {
+          originalsGrid.innerHTML = '<p class="shop-empty">Originals coming soon.</p>';
+        } else {
+          originals.forEach(function(item) {
+            originalsGrid.appendChild(buildCard(item, 'originals'));
+          });
         }
 
-        items.forEach(function(item) {
-          var card = document.createElement('a');
-          card.href = '#';
-          card.className = 'product-card';
-          card.setAttribute('data-item-id', item.id);
-          card.setAttribute('data-description', item.description || '');
-          card.onclick = function(e) { e.preventDefault(); showDetail(card); };
-
-          card.innerHTML =
-            '<div class="product-card-image">' +
-              (item.imageUrl
-                ? '<img class="product-card-img" src="' + item.imageUrl + '" alt="' + (item.name || '') + '">'
-                : '<div style="width:100%;padding-top:56%;background:linear-gradient(135deg, var(--color-accent-light), var(--color-bg-alt));"></div>') +
-            '</div>' +
-            '<div class="product-card-info">' +
-              '<h3 class="product-card-title">' + (item.name || 'Untitled') + '</h3>' +
-              '<p class="product-card-price">' + formatPrice(item.price, item.currency) + '</p>' +
-              (item.description ? '<p class="product-card-edition">' + item.description + '</p>' : '') +
-            '</div>';
-
-          grid.appendChild(card);
-        });
+        if (!prints.length) {
+          printsGrid.innerHTML = '<p class="shop-empty">Prints coming soon.</p>';
+        } else {
+          prints.forEach(function(item) {
+            printsGrid.appendChild(buildCard(item, 'prints'));
+          });
+        }
 
       } catch (err) {
         console.error('Failed to load shop:', err);
-        loading.textContent = 'New prints coming soon.';
-        loading.className = 'shop-empty';
+        if (originalsLoading) {
+          originalsLoading.textContent = 'Shop coming soon.';
+          originalsLoading.className = 'shop-empty';
+        }
       }
     })();
   </script>

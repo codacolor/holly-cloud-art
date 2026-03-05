@@ -13,18 +13,18 @@ exports.handler = async (event, context) => {
 
     try {
         const data = JSON.parse(event.body);
-        const { itemId, quantity = 1 } = data; // Expecting catalog object ID
+        const { itemId, variationId: passedVariationId, quantity = 1 } = data;
 
-        if (!itemId) {
-            return { statusCode: 400, body: JSON.stringify({ error: "Missing itemId" }) };
+        let variationId = passedVariationId;
+
+        if (!variationId) {
+            // Fall back to fetching item and using first variation
+            if (!itemId) {
+                return { statusCode: 400, body: JSON.stringify({ error: "Missing variationId or itemId" }) };
+            }
+            const itemResult = await client.catalog.object.get({ objectId: itemId });
+            variationId = itemResult.object.itemData.variations[0].id;
         }
-
-        // Retrieve the item to get the variation ID and price
-        // Note: In a real app, you might pass variationId directly from frontend.
-        // For now, let's assume we are sent the Item ID and we pick the first variation.
-        const itemResult = await client.catalog.object.get({ objectId: itemId });
-        const item = itemResult.object;
-        const variationId = item.itemData.variations[0].id; // Default to first variation
 
         const checkoutResult = await client.checkout.paymentLinks.create({
             idempotencyKey: randomUUID(),
