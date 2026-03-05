@@ -1202,6 +1202,8 @@
     /* ------------------------------------------------------------------
        Cart State
        ------------------------------------------------------------------ */
+    var SOLD_ORIGINALS = ['Nostalgia'];
+
     var cart = [];
     var cartShippingZone = 'us'; // 'us' or 'intl'
     var SHIPPING_RATES = {
@@ -1412,11 +1414,13 @@
         infoHtml += '<p class="product-card-price">' + formatPrice(item.price, item.currency) + '</p>';
       }
 
+      var isSold = SOLD_ORIGINALS.indexOf(item.name) !== -1;
       card.innerHTML =
         '<div class="product-card-image">' +
           (item.imageUrl
             ? '<img class="product-card-img" src="' + item.imageUrl + '" alt="' + (item.name || '') + '">'
             : '<div style="width:100%;padding-top:56%;background:linear-gradient(135deg, var(--color-accent-light), var(--color-bg-alt));"></div>') +
+          (isSold ? '<span class="sold-out-badge">Sold</span>' : '') +
         '</div>' +
         '<div class="product-card-info">' + infoHtml + '</div>';
 
@@ -1517,12 +1521,19 @@
         varSection.style.display = 'none';
       }
 
-      // Reset button state
+      // Reset button state — disable if sold
       var btn = detail.querySelector('.btn-collect');
-      btn.textContent = 'Add to Collection';
-      btn.disabled = false;
-      btn.style.opacity = '';
-      btn.style.cursor = '';
+      if (SOLD_ORIGINALS.indexOf(title) !== -1) {
+        btn.textContent = 'Sold';
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+        btn.style.cursor = 'default';
+      } else {
+        btn.textContent = 'Add to Collection';
+        btn.disabled = false;
+        btn.style.opacity = '';
+        btn.style.cursor = '';
+      }
 
       showView('detail');
     }
