@@ -1204,7 +1204,7 @@
     /* ------------------------------------------------------------------
        Cart State
        ------------------------------------------------------------------ */
-    var SOLD_ORIGINALS = ['Nostalgia', 'Defiant Light'];
+    // Sold-out status now comes from Square (item.soldOut) via get-catalog.js.
 
     var cart = [];
     var cartShippingZone = 'us'; // 'us' or 'intl'
@@ -1397,6 +1397,7 @@
       card.setAttribute('data-description', item.description || '');
       card.setAttribute('data-section', section);
       card.setAttribute('data-variants', JSON.stringify(item.variations || []));
+      card.setAttribute('data-sold', item.soldOut ? '1' : '0');
       card.onclick = function(e) { e.preventDefault(); showDetail(card); };
 
       var infoHtml = '<h3 class="product-card-title">' + (item.name || 'Untitled') + '</h3>';
@@ -1416,7 +1417,7 @@
         infoHtml += '<p class="product-card-price">' + formatPrice(item.price, item.currency) + '</p>';
       }
 
-      var isSold = SOLD_ORIGINALS.indexOf(item.name) !== -1;
+      var isSold = !!item.soldOut;
       card.innerHTML =
         '<div class="product-card-image">' +
           (item.imageUrl
@@ -1525,7 +1526,7 @@
 
       // Reset button state — disable if sold
       var btn = detail.querySelector('.btn-collect');
-      if (SOLD_ORIGINALS.indexOf(title) !== -1) {
+      if (card.getAttribute('data-sold') === '1') {
         btn.textContent = 'Sold';
         btn.disabled = true;
         btn.style.opacity = '0.5';

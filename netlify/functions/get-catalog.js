@@ -25,6 +25,42 @@ exports.handler = async (event, context) => {
             };
         }
 
+        // Determine sold-out status from inventory counts for tracked variations.
+        // Square's "Mark as sold out" sets locationOverrides[].soldOut; inventory-tracked
+        // items go to quantity 0. We read both so either action marks an item sold.
+        const variationIds = [];
+        result.objects.forEach(item => {
+            (item.itemData.variations || []).forEach(v => variationIds.push(v.id));
+        });
+
+        const stockByVariation = {}; // variationId -> total quantity across locations
+        if (variationIds.length > 0) {
+            try {
+                const inv = await client.inventory.batchGetCounts({
+                    catalogObjectIds: variationIds,
+                });
+                // batchGetCounts returns a paginated Page; iterate all counts.
+                for await (const c of inv) {
+                    if (c.state === 'IN_STOCK') {
+                        const id = c.catalogObjectId;
+                        stockByVariation[id] = (stockByVariation[id] || 0) + Number(c.quantity || 0);
+                    }
+                }
+            } catch (invErr) {
+                console.error('Inventory lookup failed:', invErr.message);
+            }
+        }
+
+        // A variation is sold out if Square's soldOut override is set, OR
+        // inventory is tracked for it and the in-stock quantity is 0.
+        function variationSoldOut(v) {
+            const overrides = v.itemVariationData.locationOverrides || [];
+            if (overrides.some(o => o.soldOut === true)) return true;
+            const tracked = overrides.some(o => o.trackInventory === true);
+            if (tracked && (stockByVariation[v.id] || 0) <= 0) return true;
+            return false;
+        }
+
         const items = result.objects.map(item => {
             const itemData = item.itemData;
             const variation = itemData.variations[0]; // Assuming single variation
@@ -63,8 +99,11 @@ exports.handler = async (event, context) => {
                     vPrice = Number(v.itemVariationData.priceMoney.amount);
                     vCurrency = v.itemVariationData.priceMoney.currency;
                 }
-                return { id: v.id, name: v.itemVariationData.name, price: vPrice, currency: vCurrency };
+                return { id: v.id, name: v.itemVariationData.name, price: vPrice, currency: vCurrency, soldOut: variationSoldOut(v) };
             });
+
+            // Item is sold out when every variation is sold out.
+            const soldOut = variations.length > 0 && variations.every(v => v.soldOut);
 
             return {
                 id: item.id,
@@ -75,7 +114,8 @@ exports.handler = async (event, context) => {
                 categoryName: categoryName,
                 price: price, // First variation price, in cents
                 currency: currency,
-                imageUrl: imageUrl
+                imageUrl: imageUrl,
+                soldOut: soldOut
             };
         });
 
