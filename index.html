@@ -810,6 +810,75 @@
       letter-spacing: 0.04em;
     }
 
+    /* ==========================================================================
+       Contact Form
+       ========================================================================== */
+    .contact-wrap {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 var(--space-md) var(--space-2xl);
+    }
+    .contact-form { display: flex; flex-direction: column; gap: var(--space-md); }
+    .contact-honeypot { display: none; }
+    .contact-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+    }
+    @media (max-width: 600px) { .contact-row { grid-template-columns: 1fr; } }
+    .contact-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .contact-field label {
+      font-family: var(--font-heading);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-text-muted);
+    }
+    .contact-field input,
+    .contact-field select,
+    .contact-field textarea {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      color: var(--color-text);
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .contact-field input:focus,
+    .contact-field select:focus,
+    .contact-field textarea:focus { border-color: #7a9db8; }
+    .contact-field textarea { resize: vertical; }
+    .contact-submit {
+      font-family: var(--font-heading);
+      font-size: var(--text-sm);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-white);
+      background: #7a9db8;
+      border: none;
+      border-radius: 2rem;
+      padding: 0.85rem 2.5rem;
+      cursor: pointer;
+      align-self: flex-start;
+      transition: background 0.2s;
+    }
+    .contact-submit:hover { background: #5f8aa8; }
+    .contact-success {
+      font-family: var(--font-heading);
+      font-size: var(--text-base);
+      color: #7a9db8;
+      margin-top: var(--space-sm);
+    }
+
     /* Archive section — hidden by default, shown when archive tab active */
     .archive-section { display: none; }
     .archive-section.active { display: block; }
@@ -1155,6 +1224,7 @@
     <div class="shop-tabs">
       <button class="shop-tab active" id="tab-shop" onclick="switchTab('shop')">Shop</button>
       <button class="shop-tab" id="tab-archive" onclick="switchTab('archive')">Archive</button>
+      <button class="shop-tab" id="tab-contact" onclick="switchTab('contact')">Contact</button>
     </div>
 
     <!-- Single cloud atmosphere wraps everything -->
@@ -1227,6 +1297,50 @@
         </div>
       </div>
     </div><!-- /#section-archive -->
+
+    <!-- Contact Section -->
+    <div class="archive-section" id="section-contact">
+      <div class="archive-hero">
+        <h2 class="archive-hero-title">Contact</h2>
+        <p class="archive-hero-subtitle">Commissions, press &amp; general inquiries</p>
+      </div>
+      <div class="contact-wrap">
+        <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="contact-form" id="contact-form">
+          <input type="hidden" name="form-name" value="contact">
+          <p class="contact-honeypot"><label>Don't fill this out: <input name="bot-field"></label></p>
+
+          <div class="contact-row">
+            <div class="contact-field">
+              <label for="contact-name">Name</label>
+              <input type="text" id="contact-name" name="name" placeholder="Your name" required>
+            </div>
+            <div class="contact-field">
+              <label for="contact-email">Email</label>
+              <input type="email" id="contact-email" name="email" placeholder="your@email.com" required>
+            </div>
+          </div>
+
+          <div class="contact-field">
+            <label for="contact-subject">Inquiry type</label>
+            <select id="contact-subject" name="subject" required>
+              <option value="" disabled selected>Select one…</option>
+              <option value="Commission">Commission</option>
+              <option value="General">General</option>
+              <option value="Press">Press</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="contact-field">
+            <label for="contact-message">Message</label>
+            <textarea id="contact-message" name="message" rows="5" placeholder="e.g. I'd love to inquire about getting a larger print of a piece than what's available in the shop…" required></textarea>
+          </div>
+
+          <button type="submit" class="contact-submit">Send Message</button>
+          <p class="contact-success" id="contact-success" style="display:none;">Thank you — I'll be in touch soon.</p>
+        </form>
+      </div>
+    </div><!-- /#section-contact -->
 
     <!-- Footer -->
     <footer class="footer">
@@ -1555,11 +1669,25 @@
     }
 
     function switchTab(tab) {
-      document.getElementById('tab-shop').classList.toggle('active', tab === 'shop');
-      document.getElementById('tab-archive').classList.toggle('active', tab === 'archive');
-      document.getElementById('section-shop').style.display = tab === 'shop' ? 'block' : 'none';
-      document.getElementById('section-archive').style.display = tab === 'archive' ? 'block' : 'none';
+      ['shop','archive','contact'].forEach(function(t) {
+        document.getElementById('tab-' + t).classList.toggle('active', t === tab);
+        document.getElementById('section-' + t).style.display = t === tab ? 'block' : 'none';
+      });
     }
+
+    // Handle contact form submission via fetch (no page reload)
+    document.getElementById('contact-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var form = e.target;
+      var data = new FormData(form);
+      try {
+        await fetch('/', { method: 'POST', body: data });
+        form.style.display = 'none';
+        document.getElementById('contact-success').style.display = 'block';
+      } catch(err) {
+        alert('Something went wrong — please try again.');
+      }
+    });
 
     // Build a product card element
     function buildCard(item, section) {
