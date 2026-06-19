@@ -1560,7 +1560,7 @@
       detail.querySelector('.product-price').textContent = initialPrice;
       detail.querySelector('.breadcrumb-current').textContent = title;
       document.getElementById('breadcrumb-back').textContent =
-        section === 'originals' ? 'Cloud Originals' : 'Cloud Prints';
+        section === 'originals' ? 'Cloud Originals' : section === 'archive' ? 'Archive' : 'Cloud Prints';
 
       // Artist note + edition list
       var noteEl = detail.querySelector('.artist-note p');
