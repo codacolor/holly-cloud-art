@@ -164,8 +164,9 @@
       isolation: isolate;
       background-color: rgb(247, 241, 232);
     }
-    /* While VIP locked: suppress the amber bottom cloud, keep only the light top */
-    .cloud-atmosphere-wrap.vip-locked::after {
+    /* Suppress the amber bottom cloud on VIP locked state and Contact page */
+    .cloud-atmosphere-wrap.vip-locked::after,
+    #section-contact .cloud-atmosphere-wrap::after {
       display: none;
     }
 
@@ -817,6 +818,7 @@
       max-width: 640px;
       margin: 0 auto;
       padding: 0 var(--space-md) var(--space-2xl);
+      padding-bottom: 8rem;
     }
     .contact-form { display: flex; flex-direction: column; gap: var(--space-md); }
     .contact-honeypot { display: none; }
@@ -1300,6 +1302,7 @@
 
     <!-- Contact Section -->
     <div class="archive-section" id="section-contact">
+    <div class="cloud-atmosphere-wrap">
       <div class="archive-hero">
         <h2 class="archive-hero-title">Contact</h2>
         <p class="archive-hero-subtitle">Commissions, press &amp; general inquiries</p>
@@ -1340,6 +1343,7 @@
           <p class="contact-success" id="contact-success" style="display:none;">Thank you — I'll be in touch soon.</p>
         </form>
       </div>
+    </div><!-- /.cloud-atmosphere-wrap -->
     </div><!-- /#section-contact -->
 
     <!-- Footer -->
