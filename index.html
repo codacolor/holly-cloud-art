@@ -745,30 +745,15 @@
     }
 
     /* ==========================================================================
-       VIP Early Access Timer Block
+       VIP Early Access Timer
        ========================================================================== */
-    .vip-timer-wrap {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: var(--space-2xl) var(--space-md);
-    }
-    .vip-timer-block {
-      background: rgba(210, 208, 205, 0.72);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-radius: var(--radius-md);
-      padding: var(--space-xl) var(--space-2xl);
-      text-align: center;
-      max-width: 420px;
-      width: 100%;
-    }
     .vip-banner-label {
       font-family: var(--font-heading);
       font-size: var(--text-xs);
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: var(--color-text-muted);
+      text-shadow: 0 1px 6px rgba(255,255,255,0.4);
       margin-bottom: var(--space-sm);
     }
     .vip-banner-countdown {
@@ -777,21 +762,15 @@
       font-weight: 300;
       letter-spacing: -0.01em;
       color: var(--color-text);
+      text-shadow: 0 1px 8px rgba(255,255,255,0.4);
     }
     .vip-banner-sub {
       font-family: var(--font-heading);
       font-size: var(--text-xs);
       color: var(--color-text-muted);
+      text-shadow: 0 1px 6px rgba(255,255,255,0.3);
       margin-top: var(--space-sm);
       letter-spacing: 0.06em;
-    }
-    .vip-coming-soon {
-      font-family: var(--font-heading);
-      font-size: var(--text-xl);
-      font-weight: 300;
-      color: var(--color-text-muted);
-      margin-top: var(--space-md);
-      letter-spacing: 0.04em;
     }
 
     /* Archive section — hidden by default, shown when archive tab active */
@@ -1141,28 +1120,32 @@
       <button class="shop-tab" id="tab-archive" onclick="switchTab('archive')">Archive</button>
     </div>
 
-    <!-- Single cloud atmosphere wraps originals + prints -->
+    <!-- Single cloud atmosphere wraps everything -->
     <div class="shop-section initial-active" id="section-shop">
     <div class="cloud-atmosphere-wrap">
 
-    <!-- VIP timer block — shown inside cloud backdrop while locked -->
-    <div class="vip-timer-wrap" id="vip-timer-wrap" style="display:none;">
-      <div class="vip-timer-block">
-        <div class="vip-banner-label" id="vip-banner-label">VIP Early Access opens in</div>
-        <div class="vip-banner-countdown" id="vip-countdown">—</div>
-        <div class="vip-banner-sub" id="vip-banner-sub">VIP access begins June 20 at 10am PT</div>
-        <div class="vip-coming-soon">Coming Soon</div>
+    <!-- VIP locked state: timer + coming soon on the cloud backdrop -->
+    <div id="vip-content" style="display:none;">
+      <section class="shop-hero">
+        <div class="shop-hero-inner">
+          <div class="vip-banner-label" id="vip-banner-label">VIP Early Access opens in</div>
+          <div class="vip-banner-countdown" id="vip-countdown">—</div>
+          <div class="vip-banner-sub" id="vip-banner-sub">VIP access begins June 20 at 10am PT</div>
+        </div>
+      </section>
+      <div style="text-align:center; padding: var(--space-lg) 0 var(--space-2xl);">
+        <p style="font-family:var(--font-heading); font-size:var(--text-2xl); font-weight:300; color:var(--color-text-muted); letter-spacing:0.04em;">Coming Soon</p>
       </div>
     </div>
 
+    <!-- Shop unlocked state: originals + prints -->
+    <div id="shop-content">
+
     <!-- Cloud Originals — hero + grid -->
     <div class="originals-section">
-
-    <!-- Shop Hero — atmospheric cloud banner -->
     <section class="shop-hero">
       <div class="shop-hero-inner">
         <h1 class="shop-hero-title">Cloud Originals</h1>
-
         <div class="shop-hero-artist">
           <img src="Visual/holly-profile.jpeg" alt="Holly Di Cecco" class="shop-hero-artist-portrait">
           <div class="shop-hero-artist-text">
@@ -1171,8 +1154,6 @@
         </div>
       </div>
     </section>
-
-    <!-- Originals Grid -->
     <main class="shop-main">
       <div class="container">
         <div class="shop-grid" id="originals-grid">
@@ -1180,20 +1161,19 @@
         </div>
       </div>
     </main>
-
     </div><!-- /.originals-section -->
 
     <!-- Cloud Prints Section -->
     <section class="shop-section-hero">
       <h2 class="shop-section-title">Cloud Prints</h2>
     </section>
-
-    <!-- Prints Grid -->
     <div class="shop-main">
       <div class="container">
         <div class="shop-grid" id="prints-grid"></div>
       </div>
     </div>
+
+    </div><!-- /#shop-content -->
 
     </div><!-- /.cloud-atmosphere-wrap -->
     </div><!-- /#section-shop -->
@@ -1948,53 +1928,38 @@
     function shopIsLocked() { return new Date() < VIP_START; }
 
     (function vipCountdown() {
-      var timerWrap = document.getElementById('vip-timer-wrap');
-      var label     = document.getElementById('vip-banner-label');
-      var display   = document.getElementById('vip-countdown');
-      var sub       = document.getElementById('vip-banner-sub');
-      var originals = document.querySelector('.originals-section');
-      var prints    = document.querySelector('#prints-grid') && document.querySelector('#prints-grid').closest('.shop-main');
+      var vipContent  = document.getElementById('vip-content');
+      var shopContent = document.getElementById('shop-content');
+      var label       = document.getElementById('vip-banner-label');
+      var display     = document.getElementById('vip-countdown');
+      var sub         = document.getElementById('vip-banner-sub');
 
       function tick() {
         var now    = new Date();
         var locked = now < VIP_START;
 
-        // After public launch: hide timer, show shop normally
         if (now >= PUBLIC_OPEN) {
-          if (timerWrap) timerWrap.style.display = 'none';
+          vipContent.style.display  = 'none';
+          shopContent.style.display = 'block';
           return;
         }
 
-        // Show/hide timer block vs shop grids
-        if (timerWrap) timerWrap.style.display = locked ? 'flex' : 'none';
-        if (originals) originals.style.display  = locked ? 'none' : '';
-        var printsSection = document.querySelector('.shop-section-hero');
-        var printsGrid    = document.querySelector('#prints-grid') ? document.querySelector('#prints-grid').parentElement.parentElement : null;
-        if (printsSection) printsSection.style.display = locked ? 'none' : '';
-        if (printsGrid)    printsGrid.style.display    = locked ? 'none' : '';
+        vipContent.style.display  = locked ? 'block' : 'none';
+        shopContent.style.display = locked ? 'none'  : 'block';
 
-        // Update label/sub based on phase
-        var target;
-        if (locked) {
-          target = VIP_START;
-          if (label) label.textContent = 'VIP Early Access opens in';
-          if (sub)   sub.textContent   = 'VIP access begins June 20 at 10am PT';
-        } else {
-          target = PUBLIC_OPEN;
-          if (label) label.textContent = 'Opens to the public in';
-          if (sub)   sub.textContent   = 'Public launch June 21 at 10am PT';
-        }
+        var target = locked ? VIP_START : PUBLIC_OPEN;
+        label.textContent = locked ? 'VIP Early Access opens in' : 'Opens to the public in';
+        sub.textContent   = locked ? 'VIP access begins June 20 at 10am PT' : 'Public launch June 21 at 10am PT';
 
         var diff = target - now;
         var h = Math.floor(diff / 3600000);
         var m = Math.floor((diff % 3600000) / 60000);
         var s = Math.floor((diff % 60000) / 1000);
-        if (display) display.textContent =
+        display.textContent =
           String(h).padStart(2,'0') + 'h ' +
           String(m).padStart(2,'0') + 'm ' +
           String(s).padStart(2,'0') + 's';
 
-        // Lock buy button while shop is locked
         var collectBtn = document.querySelector('#view-detail .btn-collect');
         if (collectBtn) {
           collectBtn.disabled      = locked;
