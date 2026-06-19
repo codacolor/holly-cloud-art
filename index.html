@@ -712,6 +712,68 @@
     }
 
     /* ==========================================================================
+       Shop Tabs (Shop / Archive)
+       ========================================================================== */
+    .shop-tabs {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      background-color: rgba(245, 243, 240, 0.96);
+      padding: 0 var(--space-md);
+    }
+    .shop-tab {
+      font-family: var(--font-heading);
+      font-size: var(--text-sm);
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      padding: 1rem 1.25rem;
+      border: none;
+      border-bottom: 2px solid transparent;
+      background: none;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+      margin-bottom: -1px;
+    }
+    .shop-tab:hover { color: var(--color-text); }
+    .shop-tab.active {
+      color: var(--color-text);
+      border-bottom-color: var(--color-text);
+    }
+
+    /* Archive section — hidden by default, shown when archive tab active */
+    .archive-section { display: none; }
+    .archive-section.active { display: block; }
+    .shop-section.active { display: block; }
+    .shop-section { display: none; }
+    .shop-section.initial-active { display: block; }
+
+    .archive-hero {
+      padding: var(--space-xl) 0 var(--space-lg);
+      text-align: center;
+      background-color: rgb(247, 241, 232);
+    }
+    .archive-hero-title {
+      font-family: var(--font-heading);
+      font-size: var(--text-4xl);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      color: var(--color-text);
+    }
+    .archive-hero-subtitle {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      letter-spacing: 0.04em;
+      margin-top: var(--space-xs);
+    }
+
+    /* Slightly muted cards in archive to signal "past releases" */
+    .archive-section .product-card { opacity: 0.88; }
+    .archive-section .product-card:hover { opacity: 1; }
+
+    /* ==========================================================================
        Cart Nav Button
        ========================================================================== */
     .nav-cart-btn {
@@ -1022,7 +1084,14 @@
       </nav>
     </header>
 
+    <!-- Tab strip -->
+    <div class="shop-tabs">
+      <button class="shop-tab active" id="tab-shop" onclick="switchTab('shop')">Shop</button>
+      <button class="shop-tab" id="tab-archive" onclick="switchTab('archive')">Archive</button>
+    </div>
+
     <!-- Single cloud atmosphere wraps originals + prints -->
+    <div class="shop-section initial-active" id="section-shop">
     <div class="cloud-atmosphere-wrap">
 
     <!-- Cloud Originals — hero + grid -->
@@ -1066,6 +1135,22 @@
     </div>
 
     </div><!-- /.cloud-atmosphere-wrap -->
+    </div><!-- /#section-shop -->
+
+    <!-- Archive Section -->
+    <div class="archive-section" id="section-archive">
+      <div class="archive-hero">
+        <h2 class="archive-hero-title">Archive</h2>
+        <p class="archive-hero-subtitle">Past releases — originals &amp; prints</p>
+      </div>
+      <div class="shop-main">
+        <div class="container">
+          <div class="shop-grid" id="archive-grid">
+            <p class="shop-loading" id="archive-loading">Loading&hellip;</p>
+          </div>
+        </div>
+      </div>
+    </div><!-- /#section-archive -->
 
     <!-- Footer -->
     <footer class="footer">
@@ -1381,11 +1466,22 @@
       return result;
     }
 
+    function isArchive(item) {
+      return item.categoryName && item.categoryName.toLowerCase().includes('archive');
+    }
+
     // Classify an item as an original (by category name or item name)
     function isOriginal(item) {
       var catMatch = item.categoryName && item.categoryName.toLowerCase().includes('original');
       var nameMatch = item.name && item.name.toLowerCase().includes('original');
       return catMatch || nameMatch;
+    }
+
+    function switchTab(tab) {
+      document.getElementById('tab-shop').classList.toggle('active', tab === 'shop');
+      document.getElementById('tab-archive').classList.toggle('active', tab === 'archive');
+      document.getElementById('section-shop').style.display = tab === 'shop' ? 'block' : 'none';
+      document.getElementById('section-archive').style.display = tab === 'archive' ? 'block' : 'none';
     }
 
     // Build a product card element
@@ -1783,11 +1879,13 @@
       }, { passive: false });
     })();
 
-    // Fetch products and split into originals / prints grids
+    // Fetch products and split into originals / prints / archive grids
     (async function loadShop() {
       var originalsGrid = document.getElementById('originals-grid');
       var originalsLoading = document.getElementById('originals-loading');
       var printsGrid = document.getElementById('prints-grid');
+      var archiveGrid = document.getElementById('archive-grid');
+      var archiveLoading = document.getElementById('archive-loading');
 
       try {
         var res = await fetch('/.netlify/functions/get-catalog');
@@ -1796,8 +1894,10 @@
 
         originalsLoading.remove();
 
-        var originals = items.filter(isOriginal);
-        var prints = items.filter(function(item) { return !isOriginal(item); });
+        var archiveItems = items.filter(isArchive);
+        var shopItems = items.filter(function(item) { return !isArchive(item); });
+        var originals = shopItems.filter(isOriginal);
+        var prints = shopItems.filter(function(item) { return !isOriginal(item); });
 
         if (!originals.length) {
           originalsGrid.innerHTML = '<p class="shop-empty">Originals coming soon.</p>';
@@ -1815,11 +1915,24 @@
           });
         }
 
+        if (archiveLoading) archiveLoading.remove();
+        if (!archiveItems.length) {
+          archiveGrid.innerHTML = '<p class="shop-empty">No archived releases yet.</p>';
+        } else {
+          archiveItems.forEach(function(item) {
+            archiveGrid.appendChild(buildCard(item, 'archive'));
+          });
+        }
+
       } catch (err) {
         console.error('Failed to load shop:', err);
         if (originalsLoading) {
           originalsLoading.textContent = 'Shop coming soon.';
           originalsLoading.className = 'shop-empty';
+        }
+        if (archiveLoading) {
+          archiveLoading.textContent = 'Archive coming soon.';
+          archiveLoading.className = 'shop-empty';
         }
       }
     })();
