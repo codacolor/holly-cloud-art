@@ -82,15 +82,18 @@ exports.handler = async (event, context) => {
                 }
             }
 
-            // Resolve category name from related objects
-            let categoryName = null;
-            const catId = (itemData.reportingCategory && itemData.reportingCategory.id) || itemData.categoryId;
-            if (catId) {
-                const catObj = (result.relatedObjects || []).find(function(obj) {
-                    return obj.id === catId && obj.type === 'CATEGORY';
-                });
-                if (catObj && catObj.categoryData) categoryName = catObj.categoryData.name || null;
-            }
+            // Resolve all category names from related objects (item can belong to multiple)
+            const categoryIds = new Set();
+            if (itemData.categoryId) categoryIds.add(itemData.categoryId);
+            if (itemData.reportingCategory && itemData.reportingCategory.id) categoryIds.add(itemData.reportingCategory.id);
+            (itemData.categories || []).forEach(c => { if (c.id) categoryIds.add(c.id); });
+
+            const categoryNames = [];
+            categoryIds.forEach(catId => {
+                const catObj = (result.relatedObjects || []).find(obj => obj.id === catId && obj.type === 'CATEGORY');
+                if (catObj && catObj.categoryData && catObj.categoryData.name) categoryNames.push(catObj.categoryData.name);
+            });
+            const categoryName = categoryNames[0] || null; // keep for backwards compat
 
             // All variations (sizes)
             const variations = itemData.variations.map(function(v) {
@@ -112,6 +115,7 @@ exports.handler = async (event, context) => {
                 name: itemData.name,
                 description: itemData.description,
                 categoryName: categoryName,
+                categoryNames: categoryNames,
                 price: price, // First variation price, in cents
                 currency: currency,
                 imageUrl: imageUrl,

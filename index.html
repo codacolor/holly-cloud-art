@@ -1467,7 +1467,8 @@
     }
 
     function isArchive(item) {
-      return item.categoryName && item.categoryName.toLowerCase().includes('archive');
+      var names = item.categoryNames || (item.categoryName ? [item.categoryName] : []);
+      return names.some(function(n) { return n.toLowerCase().includes('archive'); });
     }
 
     // Classify an item as an original (by category name or item name)
