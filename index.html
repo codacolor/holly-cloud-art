@@ -1128,6 +1128,11 @@
       <button class="shop-tab" id="tab-archive" onclick="switchTab('archive')">Archive</button>
     </div>
 
+    <!-- Coming Soon placeholder (visible while shop is locked) -->
+    <div id="shop-coming-soon" style="display:none; text-align:center; padding: var(--space-xl) 0 var(--space-2xl);">
+      <p style="font-family:var(--font-heading); font-size:var(--text-2xl); font-weight:300; color:var(--color-text-muted); letter-spacing:0.02em;">Coming Soon</p>
+    </div>
+
     <!-- Single cloud atmosphere wraps originals + prints -->
     <div class="shop-section initial-active" id="section-shop">
     <div class="cloud-atmosphere-wrap">
@@ -1954,6 +1959,14 @@
           String(h).padStart(2,'0') + 'h ' +
           String(m).padStart(2,'0') + 'm ' +
           String(s).padStart(2,'0') + 's';
+
+        // Show/hide coming soon vs shop content
+        var comingSoon = document.getElementById('shop-coming-soon');
+        var shopContent = document.getElementById('section-shop');
+        if (comingSoon && shopContent) {
+          comingSoon.style.display = locked ? 'block' : 'none';
+          shopContent.style.display = locked ? 'none' : 'block';
+        }
 
         // Lock/unlock buy button based on phase
         var collectBtn = document.querySelector('#view-detail .btn-collect');
