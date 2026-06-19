@@ -162,8 +162,11 @@
     .cloud-atmosphere-wrap {
       position: relative;
       isolation: isolate;
-      /* Toned-down warm beige — gentle warmth, not too golden */
       background-color: rgb(247, 241, 232);
+    }
+    /* While VIP locked: suppress the amber bottom cloud, keep only the light top */
+    .cloud-atmosphere-wrap.vip-locked::after {
+      display: none;
     }
 
     /* Top cloud: tall + slow fade so it whispers into the middle of the page */
@@ -747,13 +750,29 @@
     /* ==========================================================================
        VIP Early Access Timer
        ========================================================================== */
+    #vip-content {
+      min-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-lg);
+      padding: var(--space-2xl) var(--space-md);
+    }
+    .vip-timer-card, .vip-coming-soon-card {
+      background: rgba(245, 243, 240, 0.82);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg) var(--space-2xl);
+      text-align: center;
+    }
     .vip-banner-label {
       font-family: var(--font-heading);
       font-size: var(--text-xs);
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: var(--color-text-muted);
-      text-shadow: 0 1px 6px rgba(255,255,255,0.4);
       margin-bottom: var(--space-sm);
     }
     .vip-banner-countdown {
@@ -762,15 +781,20 @@
       font-weight: 300;
       letter-spacing: -0.01em;
       color: var(--color-text);
-      text-shadow: 0 1px 8px rgba(255,255,255,0.4);
     }
     .vip-banner-sub {
       font-family: var(--font-heading);
       font-size: var(--text-xs);
       color: var(--color-text-muted);
-      text-shadow: 0 1px 6px rgba(255,255,255,0.3);
       margin-top: var(--space-sm);
       letter-spacing: 0.06em;
+    }
+    .vip-coming-soon-card p {
+      font-family: var(--font-heading);
+      font-size: var(--text-xl);
+      font-weight: 300;
+      color: var(--color-text-muted);
+      letter-spacing: 0.04em;
     }
 
     /* Archive section — hidden by default, shown when archive tab active */
@@ -1126,15 +1150,13 @@
 
     <!-- VIP locked state: timer + coming soon on the cloud backdrop -->
     <div id="vip-content" style="display:none;">
-      <section class="shop-hero">
-        <div class="shop-hero-inner">
-          <div class="vip-banner-label" id="vip-banner-label">VIP Early Access opens in</div>
-          <div class="vip-banner-countdown" id="vip-countdown">—</div>
-          <div class="vip-banner-sub" id="vip-banner-sub">VIP access begins June 20 at 10am PT</div>
-        </div>
-      </section>
-      <div style="text-align:center; padding: var(--space-lg) 0 var(--space-2xl);">
-        <p style="font-family:var(--font-heading); font-size:var(--text-2xl); font-weight:300; color:var(--color-text-muted); letter-spacing:0.04em;">Coming Soon</p>
+      <div class="vip-timer-card">
+        <div class="vip-banner-label" id="vip-banner-label">VIP Early Access opens in</div>
+        <div class="vip-banner-countdown" id="vip-countdown">—</div>
+        <div class="vip-banner-sub" id="vip-banner-sub">VIP access begins June 20 at 10am PT</div>
+      </div>
+      <div class="vip-coming-soon-card">
+        <p>Coming Soon</p>
       </div>
     </div>
 
@@ -1944,8 +1966,10 @@
           return;
         }
 
-        vipContent.style.display  = locked ? 'block' : 'none';
+        vipContent.style.display  = locked ? 'flex' : 'none';
         shopContent.style.display = locked ? 'none'  : 'block';
+        var cloudWrap = document.querySelector('.cloud-atmosphere-wrap');
+        if (cloudWrap) cloudWrap.classList.toggle('vip-locked', locked);
 
         var target = locked ? VIP_START : PUBLIC_OPEN;
         label.textContent = locked ? 'VIP Early Access opens in' : 'Opens to the public in';
