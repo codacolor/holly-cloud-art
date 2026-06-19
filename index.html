@@ -745,33 +745,53 @@
     }
 
     /* ==========================================================================
-       VIP Early Access Banner + Countdown
+       VIP Early Access Timer Block
        ========================================================================== */
-    .vip-banner {
-      background-color: var(--color-text);
-      color: var(--color-white);
+    .vip-timer-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-2xl) var(--space-md);
+    }
+    .vip-timer-block {
+      background: rgba(210, 208, 205, 0.72);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: var(--radius-md);
+      padding: var(--space-xl) var(--space-2xl);
       text-align: center;
-      padding: 0.75rem var(--space-md);
-      font-family: var(--font-heading);
-      letter-spacing: 0.04em;
+      max-width: 420px;
+      width: 100%;
     }
     .vip-banner-label {
+      font-family: var(--font-heading);
       font-size: var(--text-xs);
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      opacity: 0.6;
-      margin-bottom: 0.25rem;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-sm);
     }
     .vip-banner-countdown {
-      font-size: var(--text-2xl);
+      font-family: var(--font-heading);
+      font-size: var(--text-4xl);
       font-weight: 300;
       letter-spacing: -0.01em;
+      color: var(--color-text);
     }
     .vip-banner-sub {
+      font-family: var(--font-heading);
       font-size: var(--text-xs);
-      opacity: 0.5;
-      margin-top: 0.25rem;
+      color: var(--color-text-muted);
+      margin-top: var(--space-sm);
       letter-spacing: 0.06em;
+    }
+    .vip-coming-soon {
+      font-family: var(--font-heading);
+      font-size: var(--text-xl);
+      font-weight: 300;
+      color: var(--color-text-muted);
+      margin-top: var(--space-md);
+      letter-spacing: 0.04em;
     }
 
     /* Archive section — hidden by default, shown when archive tab active */
@@ -1115,27 +1135,25 @@
       </nav>
     </header>
 
-    <!-- VIP Early Access Banner (auto-hides June 21 2026 10am PT) -->
-    <div class="vip-banner" id="vip-banner">
-      <div class="vip-banner-label">VIP Early Access — Opens to the public in</div>
-      <div class="vip-banner-countdown" id="vip-countdown">—</div>
-      <div class="vip-banner-sub">Public launch June 21 at 10am PT</div>
-    </div>
-
     <!-- Tab strip -->
     <div class="shop-tabs">
       <button class="shop-tab active" id="tab-shop" onclick="switchTab('shop')">Shop</button>
       <button class="shop-tab" id="tab-archive" onclick="switchTab('archive')">Archive</button>
     </div>
 
-    <!-- Coming Soon placeholder (visible while shop is locked) -->
-    <div id="shop-coming-soon" style="display:none; text-align:center; padding: var(--space-xl) 0 var(--space-2xl);">
-      <p style="font-family:var(--font-heading); font-size:var(--text-2xl); font-weight:300; color:var(--color-text-muted); letter-spacing:0.02em;">Coming Soon</p>
-    </div>
-
     <!-- Single cloud atmosphere wraps originals + prints -->
     <div class="shop-section initial-active" id="section-shop">
     <div class="cloud-atmosphere-wrap">
+
+    <!-- VIP timer block — shown inside cloud backdrop while locked -->
+    <div class="vip-timer-wrap" id="vip-timer-wrap" style="display:none;">
+      <div class="vip-timer-block">
+        <div class="vip-banner-label" id="vip-banner-label">VIP Early Access opens in</div>
+        <div class="vip-banner-countdown" id="vip-countdown">—</div>
+        <div class="vip-banner-sub" id="vip-banner-sub">VIP access begins June 20 at 10am PT</div>
+        <div class="vip-coming-soon">Coming Soon</div>
+      </div>
+    </div>
 
     <!-- Cloud Originals — hero + grid -->
     <div class="originals-section">
@@ -1924,57 +1942,64 @@
     })();
 
     // VIP countdown — two phases, auto-hides after public launch
-    var VIP_START    = new Date('2026-06-20T17:00:00Z'); // June 20 10am PT
-    var PUBLIC_OPEN  = new Date('2026-06-21T17:00:00Z'); // June 21 10am PT
+    var VIP_START   = new Date('2026-06-20T17:00:00Z'); // June 20 10am PT
+    var PUBLIC_OPEN = new Date('2026-06-21T17:00:00Z'); // June 21 10am PT
 
     function shopIsLocked() { return new Date() < VIP_START; }
 
     (function vipCountdown() {
-      var banner  = document.getElementById('vip-banner');
-      var label   = banner.querySelector('.vip-banner-label');
-      var display = document.getElementById('vip-countdown');
-      var sub     = banner.querySelector('.vip-banner-sub');
-      if (!banner) return;
+      var timerWrap = document.getElementById('vip-timer-wrap');
+      var label     = document.getElementById('vip-banner-label');
+      var display   = document.getElementById('vip-countdown');
+      var sub       = document.getElementById('vip-banner-sub');
+      var originals = document.querySelector('.originals-section');
+      var prints    = document.querySelector('#prints-grid') && document.querySelector('#prints-grid').closest('.shop-main');
 
       function tick() {
-        var now  = new Date();
-        if (now >= PUBLIC_OPEN) { banner.style.display = 'none'; return; }
+        var now    = new Date();
+        var locked = now < VIP_START;
 
-        var target, locked = now < VIP_START;
+        // After public launch: hide timer, show shop normally
+        if (now >= PUBLIC_OPEN) {
+          if (timerWrap) timerWrap.style.display = 'none';
+          return;
+        }
+
+        // Show/hide timer block vs shop grids
+        if (timerWrap) timerWrap.style.display = locked ? 'flex' : 'none';
+        if (originals) originals.style.display  = locked ? 'none' : '';
+        var printsSection = document.querySelector('.shop-section-hero');
+        var printsGrid    = document.querySelector('#prints-grid') ? document.querySelector('#prints-grid').parentElement.parentElement : null;
+        if (printsSection) printsSection.style.display = locked ? 'none' : '';
+        if (printsGrid)    printsGrid.style.display    = locked ? 'none' : '';
+
+        // Update label/sub based on phase
+        var target;
         if (locked) {
           target = VIP_START;
-          label.textContent = 'VIP Early Access opens in';
-          sub.textContent   = 'VIP access begins June 20 at 10am PT';
+          if (label) label.textContent = 'VIP Early Access opens in';
+          if (sub)   sub.textContent   = 'VIP access begins June 20 at 10am PT';
         } else {
           target = PUBLIC_OPEN;
-          label.textContent = 'VIP Early Access — Opens to the public in';
-          sub.textContent   = 'Public launch June 21 at 10am PT';
+          if (label) label.textContent = 'Opens to the public in';
+          if (sub)   sub.textContent   = 'Public launch June 21 at 10am PT';
         }
 
         var diff = target - now;
         var h = Math.floor(diff / 3600000);
         var m = Math.floor((diff % 3600000) / 60000);
         var s = Math.floor((diff % 60000) / 1000);
-        display.textContent =
+        if (display) display.textContent =
           String(h).padStart(2,'0') + 'h ' +
           String(m).padStart(2,'0') + 'm ' +
           String(s).padStart(2,'0') + 's';
 
-        // Show/hide coming soon vs shop content
-        var comingSoon = document.getElementById('shop-coming-soon');
-        var shopContent = document.getElementById('section-shop');
-        if (comingSoon && shopContent) {
-          comingSoon.style.display = locked ? 'block' : 'none';
-          shopContent.style.display = locked ? 'none' : 'block';
-        }
-
-        // Lock/unlock buy button based on phase
+        // Lock buy button while shop is locked
         var collectBtn = document.querySelector('#view-detail .btn-collect');
         if (collectBtn) {
-          collectBtn.disabled = locked;
+          collectBtn.disabled      = locked;
           collectBtn.style.opacity = locked ? '0.4' : '';
           collectBtn.style.cursor  = locked ? 'not-allowed' : '';
-          if (locked) collectBtn.title = 'Available June 20 at 10am PT';
         }
       }
       tick();
