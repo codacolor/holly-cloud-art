@@ -744,6 +744,36 @@
       border-bottom-color: var(--color-text);
     }
 
+    /* ==========================================================================
+       VIP Early Access Banner + Countdown
+       ========================================================================== */
+    .vip-banner {
+      background-color: var(--color-text);
+      color: var(--color-white);
+      text-align: center;
+      padding: 0.75rem var(--space-md);
+      font-family: var(--font-heading);
+      letter-spacing: 0.04em;
+    }
+    .vip-banner-label {
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      opacity: 0.6;
+      margin-bottom: 0.25rem;
+    }
+    .vip-banner-countdown {
+      font-size: var(--text-2xl);
+      font-weight: 300;
+      letter-spacing: -0.01em;
+    }
+    .vip-banner-sub {
+      font-size: var(--text-xs);
+      opacity: 0.5;
+      margin-top: 0.25rem;
+      letter-spacing: 0.06em;
+    }
+
     /* Archive section — hidden by default, shown when archive tab active */
     .archive-section { display: none; }
     .archive-section.active { display: block; }
@@ -1084,6 +1114,13 @@
         </button>
       </nav>
     </header>
+
+    <!-- VIP Early Access Banner (auto-hides June 21 2026 10am PT) -->
+    <div class="vip-banner" id="vip-banner">
+      <div class="vip-banner-label">VIP Early Access — Opens to the public in</div>
+      <div class="vip-banner-countdown" id="vip-countdown">—</div>
+      <div class="vip-banner-sub">Public launch June 21 at 10am PT</div>
+    </div>
 
     <!-- Tab strip -->
     <div class="shop-tabs">
@@ -1879,6 +1916,32 @@
           applyTransform(false);
         }
       }, { passive: false });
+    })();
+
+    // VIP countdown — hides automatically when deadline passes
+    (function vipCountdown() {
+      var banner = document.getElementById('vip-banner');
+      var display = document.getElementById('vip-countdown');
+      if (!banner) return;
+      // June 21 2026 10:00am PT = 17:00 UTC
+      var deadline = new Date('2026-06-21T17:00:00Z');
+      function tick() {
+        var now = new Date();
+        var diff = deadline - now;
+        if (diff <= 0) {
+          banner.style.display = 'none';
+          return;
+        }
+        var h = Math.floor(diff / 3600000);
+        var m = Math.floor((diff % 3600000) / 60000);
+        var s = Math.floor((diff % 60000) / 1000);
+        display.textContent =
+          String(h).padStart(2,'0') + 'h ' +
+          String(m).padStart(2,'0') + 'm ' +
+          String(s).padStart(2,'0') + 's';
+      }
+      tick();
+      setInterval(tick, 1000);
     })();
 
     // Fetch products and split into originals / prints / archive grids
