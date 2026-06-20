@@ -716,6 +716,25 @@
     }
 
     /* ==========================================================================
+       VIP Public Launch Banner (slim, single line)
+       ========================================================================== */
+    .vip-launch-banner {
+      display: none;
+      text-align: center;
+      padding: 0.55rem var(--space-md);
+      background: rgba(122, 157, 184, 0.15);
+      border-bottom: 1px solid rgba(122, 157, 184, 0.25);
+      font-family: var(--font-heading);
+      font-size: var(--text-xs);
+      letter-spacing: 0.08em;
+      color: var(--color-text-muted);
+    }
+    .vip-launch-banner span {
+      color: #7a9db8;
+      font-weight: 500;
+    }
+
+    /* ==========================================================================
        Shop Tabs (Shop / Archive)
        ========================================================================== */
     .shop-tabs {
@@ -1222,6 +1241,11 @@
         </button>
       </nav>
     </header>
+
+    <!-- VIP public launch banner -->
+    <div class="vip-launch-banner" id="vip-launch-banner">
+      VIP Early Access — Shop opens to the public in <span id="vip-launch-countdown"></span>
+    </div>
 
     <!-- Tab strip -->
     <div class="shop-tabs">
@@ -2117,6 +2141,11 @@
         var cloudWrap = document.querySelector('.cloud-atmosphere-wrap');
         if (cloudWrap) cloudWrap.classList.toggle('vip-locked', locked);
 
+        // Slim public launch banner — visible only during VIP window
+        var launchBanner = document.getElementById('vip-launch-banner');
+        var launchCountdown = document.getElementById('vip-launch-countdown');
+        if (launchBanner) launchBanner.style.display = locked ? 'none' : 'block';
+
         var target = locked ? VIP_START : PUBLIC_OPEN;
         label.textContent = locked ? 'VIP Early Access opens in' : 'Opens to the public in';
         sub.textContent   = locked ? 'VIP access begins June 20 at 10am PT' : 'Public launch June 21 at 10am PT';
@@ -2125,6 +2154,8 @@
         var h = Math.floor(diff / 3600000);
         var m = Math.floor((diff % 3600000) / 60000);
         var s = Math.floor((diff % 60000) / 1000);
+        var timeStr = String(h).padStart(2,'0') + 'h ' + String(m).padStart(2,'0') + 'm ' + String(s).padStart(2,'0') + 's';
+        if (launchCountdown && !locked) launchCountdown.textContent = timeStr;
         display.textContent =
           String(h).padStart(2,'0') + 'h ' +
           String(m).padStart(2,'0') + 'm ' +
