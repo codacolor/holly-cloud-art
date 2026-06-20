@@ -94,7 +94,6 @@ exports.handler = async (event, context) => {
                 if (catObj && catObj.categoryData && catObj.categoryData.name) categoryNames.push(catObj.categoryData.name);
             });
             const categoryName = categoryNames[0] || null; // keep for backwards compat
-            console.log(`[catalog] "${itemData.name}" | categoryIds: ${[...categoryIds].join(',')} | categoryNames: ${categoryNames.join(',') || '(none)'} | reportingCategory: ${JSON.stringify(itemData.reportingCategory)} | categories: ${JSON.stringify(itemData.categories)}`);
 
             // All variations (sizes)
             const variations = itemData.variations.map(function(v) {
