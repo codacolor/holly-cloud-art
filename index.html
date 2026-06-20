@@ -2158,7 +2158,7 @@
 
         var archiveItems = items.filter(isArchive);
         var shopItems = items.filter(function(item) { return !isArchive(item); });
-        var originals = shopItems.filter(isOriginal);
+        var originals = shopItems.filter(isOriginal).sort(function(a, b) { return b.price - a.price; });
         var prints = shopItems.filter(function(item) { return !isOriginal(item); });
 
         if (!originals.length) {
