@@ -899,6 +899,71 @@
       color: #7a9db8;
       margin-top: var(--space-sm);
     }
+    .newsletter-divider {
+      border: none;
+      border-top: 1px solid var(--color-border);
+      margin: var(--space-xl) 0 var(--space-lg);
+    }
+    .newsletter-wrap {
+      max-width: 480px;
+    }
+    .newsletter-wrap h3 {
+      font-family: var(--font-heading);
+      font-size: var(--text-lg);
+      font-weight: 400;
+      color: var(--color-text);
+      margin: 0 0 0.35rem;
+    }
+    .newsletter-wrap p {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      margin: 0 0 var(--space-md);
+    }
+    .newsletter-row {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+    .newsletter-row input[type="email"] {
+      flex: 1;
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      color: var(--color-text);
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+    }
+    .newsletter-row input[type="email"]:focus { border-color: #7a9db8; }
+    .newsletter-submit {
+      font-family: var(--font-heading);
+      font-size: var(--text-sm);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-white);
+      background: #7a9db8;
+      border: none;
+      border-radius: 2rem;
+      padding: 0.75rem 1.75rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .newsletter-submit:hover { background: #5f8aa8; }
+    .newsletter-success {
+      font-family: var(--font-heading);
+      font-size: var(--text-base);
+      color: #7a9db8;
+      margin-top: var(--space-sm);
+      display: none;
+    }
+    @media (max-width: 480px) {
+      .newsletter-row { flex-direction: column; align-items: stretch; }
+      .newsletter-submit { border-radius: 2rem; }
+    }
 
     /* Archive section — hidden by default, shown when archive tab active */
     .archive-section { display: none; }
@@ -1367,6 +1432,21 @@
           <button type="submit" class="contact-submit">Send Message</button>
           <p class="contact-success" id="contact-success" style="display:none;">Thank you — I'll be in touch soon.</p>
         </form>
+
+        <hr class="newsletter-divider">
+
+        <div class="newsletter-wrap">
+          <h3>Stay in the loop</h3>
+          <p>New releases, behind-the-scenes, and early access — straight to your inbox.</p>
+          <form id="newsletter-form" novalidate>
+            <div class="newsletter-row">
+              <input type="email" id="newsletter-email" placeholder="your@email.com" required>
+              <button type="submit" class="newsletter-submit">Subscribe</button>
+            </div>
+          </form>
+          <p class="newsletter-success" id="newsletter-success">You're on the list!</p>
+        </div>
+
       </div>
     </div><!-- /.cloud-atmosphere-wrap -->
     </div><!-- /#section-contact -->
@@ -1713,6 +1793,27 @@
         await fetch('/', { method: 'POST', body: data });
         form.style.display = 'none';
         document.getElementById('contact-success').style.display = 'block';
+      } catch(err) {
+        alert('Something went wrong — please try again.');
+      }
+    });
+
+    document.getElementById('newsletter-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var email = document.getElementById('newsletter-email').value.trim();
+      if (!email) return;
+      try {
+        var res = await fetch('/.netlify/functions/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email })
+        });
+        if (res.ok) {
+          document.getElementById('newsletter-form').style.display = 'none';
+          document.getElementById('newsletter-success').style.display = 'block';
+        } else {
+          alert('Something went wrong — please try again.');
+        }
       } catch(err) {
         alert('Something went wrong — please try again.');
       }
