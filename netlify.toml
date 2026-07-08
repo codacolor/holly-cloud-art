@@ -11,3 +11,18 @@
   from = "/vip-thank-you"
   to = "/landing-pages/vip-thank-you/"
   status = 200
+
+[[redirects]]
+  from = "/shop"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/archive"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/contact"
+  to = "/index.html"
+  status = 200

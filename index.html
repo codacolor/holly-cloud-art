@@ -259,8 +259,8 @@
       margin-top: var(--space-md);
     }
     .shop-hero-artist-portrait {
-      width: 61px;
-      height: 61px;
+      width: 84px;
+      height: 84px;
       border-radius: 50%;
       object-fit: cover;
       flex-shrink: 0;
@@ -485,6 +485,32 @@
       pointer-events: none;
     }
     .product-image-frame:hover::after { opacity: 1; }
+
+    /* Secondary photos (e.g. easel/in-studio shots) shown as thumbnails below
+       the main product image — hidden entirely when an item has none. */
+    .product-thumbs {
+      display: none;
+      gap: var(--space-sm);
+      margin-top: var(--space-sm);
+    }
+    .product-thumb {
+      padding: 0;
+      border: 2px solid transparent;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      cursor: pointer;
+      background: none;
+      width: 72px;
+      height: 72px;
+      flex-shrink: 0;
+    }
+    .product-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .product-thumb.active { border-color: var(--color-cta, #c9a87c); }
 
     /* ==========================================================================
        Zoom Modal
@@ -1501,6 +1527,7 @@
             <div class="product-image-frame">
               <img src="https://images.unsplash.com/photo-1534088568595-a066f410bcda?w=1200&q=85" alt="Morning Ascent">
             </div>
+            <div class="product-thumbs" id="product-thumbs"></div>
           </div>
 
           <!-- Right: Details -->
@@ -1765,6 +1792,15 @@
       return result;
     }
 
+    // Secondary "on the easel" photos for select originals, keyed by a
+    // lowercase-letters-only version of the painting title.
+    var EASEL_SHOTS = {
+      revelation: 'Visual/easel-shots/revelation-easel-shot.jpg',
+      resonance: 'Visual/easel-shots/resonance-easel-shot.jpg',
+      tunnelview: 'Visual/easel-shots/tunnelview-easel-shot.jpg',
+      parhelion: 'Visual/easel-shots/parhelion-easel-shot.jpg'
+    };
+
     function isArchive(item) {
       var names = item.categoryNames || (item.categoryName ? [item.categoryName] : []);
       return names.some(function(n) { return n.toLowerCase().includes('archive'); });
@@ -1777,12 +1813,45 @@
       return catMatch || nameMatch;
     }
 
-    function switchTab(tab) {
+    // Items in the Archive category aren't separately tagged "Originals" —
+    // both the original painting and its print end up archived once retired.
+    // The only signal is the name: prints are suffixed "... Print".
+    function isArchivedOriginal(item) {
+      return isArchive(item) && item.name && !/\bprint$/i.test(item.name.trim());
+    }
+
+    // Each tab gets its own URL (/shop, /archive, /contact) so it's linkable
+    // and survives a refresh — Netlify rewrites those paths to this same page.
+    var TAB_PATHS = { shop: '/shop', archive: '/archive', contact: '/contact' };
+
+    function tabFromPath(pathname) {
+      var clean = pathname.replace(/\/+$/, '') || '/';
+      if (clean === '/archive') return 'archive';
+      if (clean === '/contact') return 'contact';
+      return 'shop';
+    }
+
+    function switchTab(tab, opts) {
+      opts = opts || {};
       ['shop','archive','contact'].forEach(function(t) {
         document.getElementById('tab-' + t).classList.toggle('active', t === tab);
         document.getElementById('section-' + t).style.display = t === tab ? 'block' : 'none';
       });
+      if (opts.updateUrl !== false) {
+        var path = TAB_PATHS[tab] || '/';
+        if (window.location.pathname !== path) {
+          history.pushState({ tab: tab }, '', path);
+        }
+      }
     }
+
+    // Set the correct tab on initial load (deep link / refresh) without
+    // rewriting the URL that's already there.
+    switchTab(tabFromPath(window.location.pathname), { updateUrl: false });
+
+    window.addEventListener('popstate', function() {
+      switchTab(tabFromPath(window.location.pathname), { updateUrl: false });
+    });
 
     // Handle contact form submission via fetch (no page reload)
     document.getElementById('contact-form').addEventListener('submit', async function(e) {
@@ -1844,9 +1913,6 @@
           infoHtml += '<p class="product-card-description">' + item.description + '</p>';
         }
       }
-      if (section === 'originals' && item.price) {
-        infoHtml += '<p class="product-card-price">' + formatPrice(item.price, item.currency) + '</p>';
-      }
 
       var isSold = !!item.soldOut;
       card.innerHTML =
@@ -1889,6 +1955,31 @@
         detailImg.alt = '';
         detailImg.style.display = 'none';
       }
+
+      // In-studio "on the easel" photos for select originals — real-life shots
+      // alongside the digital image, matched loosely by title.
+      var thumbsWrap = detail.querySelector('#product-thumbs');
+      var easelKey = Object.keys(EASEL_SHOTS).find(function(k) {
+        return title.toLowerCase().replace(/[^a-z]/g, '').includes(k);
+      });
+      if (section === 'originals' && easelKey && imgSrc) {
+        var easelUrl = EASEL_SHOTS[easelKey];
+        thumbsWrap.innerHTML =
+          '<button class="product-thumb active" data-full="' + imgSrc + '"><img src="' + imgSrc + '" alt="' + title + ' — digital"></button>' +
+          '<button class="product-thumb" data-full="' + easelUrl + '"><img src="' + easelUrl + '" alt="' + title + ' on the easel"></button>';
+        thumbsWrap.style.display = 'flex';
+        thumbsWrap.querySelectorAll('.product-thumb').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            thumbsWrap.querySelectorAll('.product-thumb').forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            detailImg.src = btn.getAttribute('data-full');
+          });
+        });
+      } else {
+        thumbsWrap.style.display = 'none';
+        thumbsWrap.innerHTML = '';
+      }
+
       detail.querySelector('.product-title').textContent = title;
       detail.querySelector('.product-price').textContent = initialPrice;
       detail.querySelector('.breadcrumb-current').textContent = title;
@@ -2288,9 +2379,19 @@
 
         originalsLoading.remove();
 
-        var archiveItems = items.filter(isArchive);
+        // Sold originals live in the Archive category in Square, but we surface
+        // them in the shop grid (with their "Sold" badge) as social proof that
+        // past work has sold — Archive keeps only sold-out prints, no duplicates.
+        var soldArchivedOriginals = items.filter(function(item) {
+          return isArchivedOriginal(item) && item.soldOut;
+        });
+        var archiveItems = items.filter(function(item) {
+          return isArchive(item) && !(isArchivedOriginal(item) && item.soldOut);
+        });
         var shopItems = items.filter(function(item) { return !isArchive(item); });
-        var originals = shopItems.filter(isOriginal).sort(function(a, b) { return b.price - a.price; });
+        var originals = shopItems.filter(isOriginal)
+          .concat(soldArchivedOriginals)
+          .sort(function(a, b) { return b.price - a.price; });
         var prints = shopItems.filter(function(item) { return !isOriginal(item); });
 
         if (!originals.length) {
