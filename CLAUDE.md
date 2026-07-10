@@ -53,11 +53,13 @@ Visual/Video/poster.jpg       # Video poster frame
 - **Kit v4 vs v3 API**: `kit_`-prefixed keys are v4. Must use `api.kit.com` (not `api.convertkit.com`) with `X-Kit-Api-Key` header. Two-step: POST `/v4/subscribers`, then POST `/v4/forms/{id}/subscribers`.
 - **Netlify deploy queue**: Deploys can get stuck. Use `netlify api cancelSiteDeploy` to clear.
 - **iOS video autoplay**: Requires `autoplay muted loop playsinline` attributes.
+- **Netlify Forms need detection enabled per site**: Holly's site had `processing_settings.ignore_html_forms: true`, so `data-netlify` forms silently didn't register. Fix: `PATCH /api/v1/sites/{id}` with `{"processing_settings":{"ignore_html_forms":false,...}}`, then redeploy (detection runs at deploy time). Verify with `GET /sites/{id}/forms`.
 
 ## Deployment
 
-- **Holly's site**: `holly-cloud-art.netlify.app` (site ID: `ecd5295f-827e-45bf-9ad2-8e1f9bae20f0`) — deploy anytime with:
-  `netlify deploy --prod --site ecd5295f-827e-45bf-9ad2-8e1f9bae20f0 --dir .`
+- **Holly's site**: `holly-cloud-art.netlify.app` (site ID: `ecd5295f-827e-45bf-9ad2-8e1f9bae20f0`, on Holly's own Netlify account) — also serves **yourweddingpainted.com** (custom domain; host-based rewrite in netlify.toml serves `/landing-pages/live-wedding-painting/` at that domain's root). Deploy anytime with:
+  `NETLIFY_AUTH_TOKEN=$HOLLY_NETLIFY_TOKEN netlify deploy --prod --site ecd5295f-827e-45bf-9ad2-8e1f9bae20f0 --dir .` (token in `~/.claude/.env`)
+- **GitHub Action** (`.github/workflows/deploy-holly-netlify.yml`): deploys to Holly's site on every push to master, once repo secrets `HOLLY_NETLIFY_TOKEN` + `HOLLY_NETLIFY_SITE_ID` are set (pending as of 2026-07-09).
 - **Cody's site**: `hollycloudart.netlify.app` — auto-deploys from GitHub push to `codacolor/holly-cloud-art` master (webhook may need Cody to fix)
 - Both sites point to the same repo/code; Holly's is the reliable deploy path
 
