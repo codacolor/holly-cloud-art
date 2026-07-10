@@ -11,6 +11,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install function dependencies
+        run: npm ci
+
       - name: Deploy site
         run: npx --yes netlify-cli@latest deploy --prod --dir .
         env:
