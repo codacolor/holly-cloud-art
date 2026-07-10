@@ -26,3 +26,26 @@
   from = "/contact"
   to = "/index.html"
   status = 200
+
+# Domain-level: yourweddingpainted.com (Holly's Netlify project) serves the wedding page at root
+[[redirects]]
+  from = "https://yourweddingpainted.com/"
+  to = "/landing-pages/live-wedding-painting/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "https://www.yourweddingpainted.com/"
+  to = "/landing-pages/live-wedding-painting/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/wedding"
+  to = "/landing-pages/live-wedding-painting/"
+  status = 200
+
+[[redirects]]
+  from = "/live-wedding-painting"
+  to = "/landing-pages/live-wedding-painting/"
+  status = 200

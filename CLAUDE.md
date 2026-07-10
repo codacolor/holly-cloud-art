@@ -2,7 +2,7 @@
 
 ## Current Status
 
-Repo cleaned up and pushed (2026-02-28). Holly (`hollydicecco`) added as GitHub collaborator with write access. Next: clone repo on Holly's Mac at sync meeting, then production shop build (8 tasks). See [references/20260228-checkpoint.md](references/20260228-checkpoint.md) for full context.
+Shop homepage dynamically loads products from Square catalog and checkout redirects to Square hosted payment (2026-03-02). All 8 products show but need images uploaded in Square dashboard. See [references/20260302-checkpoint.md](references/20260302-checkpoint.md) for full context.
 
 ## Overview
 - **Site**: hollucinations.com (Netlify, custom domain)
@@ -16,11 +16,11 @@ Repo cleaned up and pushed (2026-02-28). Holly (`hollydicecco`) added as GitHub 
 - `netlify.toml` for config, redirects, publish dir
 - Serverless function: `netlify/functions/subscribe.js` (Kit v4 integration)
 - Square shop: `netlify/functions/get-catalog.js` and `create-checkout.js`
-- Env vars on Netlify: `KIT_API_KEY`, `KIT_FORM_ID`
+- Env vars on Netlify: `KIT_API_KEY`, `KIT_FORM_ID`, `SQUARE_ACCESS_TOKEN`, `SQUARE_APP_ID`, `SQUARE_ENVIRONMENT`, `SQUARE_LOCATION_ID`
 
 ## File Structure
 ```
-index.html                    # Main landing page (hero video, gallery, shop, waitlist)
+index.html                    # Shop homepage (dynamic Square catalog, masonry grid, detail view, checkout)
 styles/main.css               # Main site styles
 styles/brand-tokens.css       # Shared CSS custom properties
 scripts/main.js               # Main site JS (form handling, lightbox, etc.)
@@ -42,7 +42,7 @@ Visual/Video/poster.jpg       # Video poster frame
 - VIP thank-you page uses absolute CSS path instead
 
 ## Pages
-- `/` — Main site with hero video, gallery, shop, waitlist form
+- `/` — Shop homepage (loads products from Square, detail view, checkout)
 - `/vip` — Lead capture page (Hormozi-style single screen, video bg, form → Kit)
 - `/vip-thank-you` — Confirmation page for Kit button redirects
 
