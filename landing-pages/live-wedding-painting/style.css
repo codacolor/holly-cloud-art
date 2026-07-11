@@ -79,10 +79,12 @@ img, video { display: block; max-width: 100%; }
   display: block;
   font-family: var(--font-heading);
   font-weight: 400;
-  font-size: clamp(2.25rem, 1.1rem + 5vw, 5rem);
-  line-height: 1.08;
+  font-size: clamp(1.6rem, 3.2vw, 3.75rem);
+  line-height: 1.15;
   letter-spacing: 0.005em;
+  white-space: nowrap;
 }
+.hero-line1, .hero-line2 { display: inline; }
 .hero-headline-main em {
   font-style: italic;
   color: #7a5a2e;
@@ -461,6 +463,8 @@ img, video { display: block; max-width: 100%; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 860px) {
+  .hero-headline-main { font-size: clamp(1.6rem, 1rem + 3.4vw, 2.5rem); white-space: normal; }
+  .hero-line2 { display: block; margin-top: 0.12em; }
   .triptych { grid-template-columns: 1fr; }
   .pos-intro { grid-template-columns: 1fr; }
   .pos-images { flex-direction: row; align-items: center; }
