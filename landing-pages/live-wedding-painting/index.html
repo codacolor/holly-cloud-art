@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Live Wedding Painting | Holly Di Cecco</title>
-  <meta name="description" content="Holly Di Cecco paints your wedding live, as it happens. Guests watch the moment come to life on canvas, and you go home with an original painting of your day. Based in Bend, Oregon, available for destination weddings.">
+  <meta name="description" content="Holly Di Cecco paints your wedding live, as it happens. Guests watch the moment come to life on canvas, and the finished, studio-varnished original is delivered to you in the weeks after. Based in Bend, Oregon, available for destination weddings.">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Live Wedding Painting | Holly Di Cecco">
@@ -19,7 +19,7 @@
 
   <!-- Shared brand tokens + page styles (absolute paths resolve under Netlify rewrite) -->
   <link rel="stylesheet" href="/styles/brand-tokens.css">
-  <link rel="stylesheet" href="/landing-pages/live-wedding-painting/style.css">
+  <link rel="stylesheet" href="/landing-pages/live-wedding-painting/style.css?v=20260711d">
 </head>
 <body>
 
@@ -33,25 +33,23 @@
     <p class="eyebrow">Live Wedding Painting &nbsp;//&nbsp; Bend, Oregon</p>
     <h1 class="wordmark">Holly Di Cecco</h1>
     <p class="hero-tag">Your wedding, painted live as it happens.</p>
+    <p class="hero-clarify">A landscape of your day, not a portrait of your faces &mdash; the venue, the light, and the details you choose, held in one atmospheric scene.</p>
 
-    <!-- Triptych: portrait / live-painting VIDEO / finished painting -->
+    <!-- Triptych: 3 real photos (no video yet) -->
     <div class="triptych">
-      <!-- SLOT: hero-portrait (swap in photoshoot portrait) -->
-      <div class="tri-panel slot" data-label="Artist portrait">
-        <span class="slot-note">Portrait &middot; from photoshoot</span>
+      <!-- Real photo: finished painting on easel, House on Metolius shoot. Panel sized to the image's true aspect ratio, so nothing is cropped or letterboxed -->
+      <div class="tri-panel tri-photo" style="aspect-ratio: 1400 / 936;">
+        <img src="/landing-pages/live-wedding-painting/img/hero-triptych-1-v2.webp" alt="Finished landscape painting of Mt. Hood, river, and meadow on an easel">
       </div>
 
-      <!-- Real video placeholder (swap for the wedding-specific live-painting video later) -->
-      <div class="tri-panel tri-video">
-        <video autoplay muted loop playsinline poster="/Visual/Video/poster.jpg">
-          <source src="/Visual/Video/website-video.mp4" type="video/mp4">
-        </video>
-        <span class="tri-video-cap">Painting, live</span>
+      <!-- Real photo: 35mm film scan (sprocket holes intentionally visible), House on Metolius shoot -->
+      <div class="tri-panel tri-photo" style="aspect-ratio: 1400 / 1157;">
+        <img src="/landing-pages/live-wedding-painting/img/hero-triptych-2.webp" alt="Film scan of Holly's easel and painting setup by the river, Mt. Hood in the distance">
       </div>
 
-      <!-- SLOT: hero-artwork (swap in a finished wedding painting) -->
-      <div class="tri-panel slot slot-art" data-label="Finished painting">
-        <span class="slot-note">Finished wedding painting</span>
+      <!-- Real photo: Holly painting, House on Metolius shoot -->
+      <div class="tri-panel tri-photo" style="aspect-ratio: 1400 / 931;">
+        <img src="/landing-pages/live-wedding-painting/img/hero-triptych-3.webp" alt="Holly Di Cecco painting on location in Central Oregon">
       </div>
     </div>
   </header>
@@ -61,75 +59,82 @@
     <div class="meet-grid">
       <!-- Real photo: Holly plein-air (House on Metolius shoot). Swap freely from contact sheet. -->
       <div class="meet-photo">
-        <img src="/landing-pages/live-wedding-painting/img/meet-holly.webp" alt="Holly Di Cecco by the river in Central Oregon">
+        <img src="/landing-pages/live-wedding-painting/img/meet-holly-v2.webp" alt="Holly Di Cecco with her easel and painting, outdoors">
       </div>
       <div class="meet-copy">
         <p class="kicker">Nice to meet you // I'm Holly</p>
         <h2>An artist, quietly at the edge of your day.</h2>
-        <p>I set up somewhere unobtrusive at your ceremony or reception and paint the moment as it unfolds. Your guests watch it come to life over the evening, and you leave with an original painting of your wedding. Not a print. Not a photo. A one-of-one piece you will hang for the rest of your life.</p>
-        <p>I paint clouds, light, and atmosphere for a living. A wedding is the most human version of that, and it is my favorite thing to paint.</p>
+        <p>I set up somewhere unobtrusive at your ceremony or reception and paint the moment as it unfolds. Your guests watch it come to life over the evening, and afterward I bring it into the studio for its final finish and varnish before it comes home to you. A one-of-one piece you will hang for the rest of your life.</p>
+        <p>I paint clouds, light, and atmosphere for a living. A wedding is the most human version of that, and I would be <em>honored</em> to paint it for you.</p>
       </div>
     </div>
   </section>
 
   <!-- ============ POSITIONING (a scene, not a portrait) ============ -->
   <section class="section positioning">
-    <div class="pos-inner">
-      <p class="kicker center">A scene, not a portrait</p>
-      <h2 class="center pos-head">The most beautiful weddings aren't remembered as a pose.</h2>
-      <div class="pos-copy">
-        <p class="pos-muted">Most live wedding painters paint your faces mid-ceremony. It is a kind idea, but portraits are hard to get right, and they often end up closer to caricature than art. Lovely for a season, then quietly moved to a spare room.</p>
-        <p class="pos-muted">A whole house of your own wedding photos runs into the same trouble. Beautiful to you, a little much for everyone else.</p>
-        <p class="pos-lead">So I paint the scene instead. Your venue in the golden light. The sky at the moment you said yes. The atmosphere of the entire day, held in a single frame.</p>
-        <p>Step back and it reads as fine art first, and your wedding second. It becomes the painting guests ask about, the one with a story only you can tell. And it is the rare wedding keepsake your children and grandchildren will actually want on their own walls, long after the photos are boxed away. One of one. Made to be handed down.</p>
+
+    <!-- Stripe 1: intro copy (left) + process photos (right, smaller) -->
+    <div class="pos-intro">
+      <div class="pos-intro-copy">
+        <h2 class="center pos-head">The most beautiful weddings aren't remembered as a pose.</h2>
+        <p class="pos-muted">Your photographer already has you and your partner covered beautifully! The vows, the kiss, every close-up glance at the altar. That part of the day is in great hands.</p>
+        <p class="pos-muted">A painting captures something else. The palpable energy, from pre-aisle nerves to dance-floor vibes, all laced into each brushstroke. It is one of the benefits of arriving early for setup as a quiet observer, your day is literally infused into the work.</p>
       </div>
-      <!-- Real photo: the Central Oregon scene Holly paints (House on Metolius shoot). -->
-      <div class="pos-visual">
-        <img src="/landing-pages/live-wedding-painting/img/scene.webp" alt="A Central Oregon meadow, river, and pines at the light Holly paints">
+      <div class="pos-images">
+        <!-- Real photo: mixing paint, House on Metolius shoot -->
+        <img src="/landing-pages/live-wedding-painting/img/pos-hands.webp" alt="Holly's hands mixing paint on location">
+        <!-- Real photo: palette + brushes, film scan (sprocket holes intentional) -->
+        <img src="/landing-pages/live-wedding-painting/img/pos-palette.webp" alt="Holly's palette and brushes on location, film scan">
+      </div>
+    </div>
+
+    <!-- Stripe 2: the lead statement, centered -->
+    <div class="pos-inner">
+      <div class="pos-copy">
+        <p class="pos-lead">So I paint the scene instead. Your venue in the golden light. The sky at the moment you said yes. The atmosphere of the entire day, held in a single frame.</p>
+        <p>Step back and it reads as fine art first, and your wedding second. It becomes the painting guests ask about, the one with a story only you can tell. It is the rare wedding keepsake your children and grandchildren will fight over. One of one, made to be handed down.</p>
       </div>
     </div>
   </section>
 
-  <!-- ============ EMOTIONAL STATEMENT ============ -->
+  <!-- ============ EMOTIONAL STATEMENT (overlaid on photo) ============ -->
   <section class="statement">
-    <p>Your day deserves to be remembered</p>
-    <p class="statement-em">as a true work of art.</p>
-    <p class="statement-sub">But it is about more than the beauty of the finished piece.</p>
+    <!-- Real photo: the Central Oregon scene Holly paints (House on Metolius shoot). -->
+    <div class="pos-visual">
+      <img src="/landing-pages/live-wedding-painting/img/scene.webp" alt="A Central Oregon meadow, river, and pines at the light Holly paints">
+      <div class="statement-overlay">
+        <p>Your day deserves to be remembered</p>
+        <p class="statement-em">as a true work of art.</p>
+      </div>
+    </div>
   </section>
 
   <!-- ============ THE EXPERIENCE (alternating rows) ============ -->
   <section class="section experience">
 
     <div class="exp-row">
-      <!-- PLACEHOLDER (AI mockup, not real proof). Replace with real event photo before launch. -->
+      <!-- Real photo: House on Metolius shoot -->
       <div class="exp-photo">
-        <img src="/landing-pages/live-wedding-painting/img/exp-guests.webp" alt="An artist painting live at a wedding as guests watch">
+        <img src="/landing-pages/live-wedding-painting/img/exp-guests.webp" alt="Holly Di Cecco painting live at an easel, mountain and river scene in the background">
       </div>
       <div class="exp-copy">
         <h3>The entertainment your guests didn't expect.</h3>
-        <p>Throughout the evening, people drift over to watch the canvas change. It becomes a gathering point, a conversation, a small piece of wonder happening in real time. Nobody has seen this at a wedding before.</p>
+        <p>Throughout the evening, people drift over to watch the canvas change. It becomes a gathering point, a conversation, a small piece of wonder happening in real time. Nobody has seen this at a wedding before!</p>
       </div>
     </div>
 
-    <div class="exp-row exp-reverse">
-      <!-- PLACEHOLDER (AI mockup, not real proof). Replace with real event photo before launch. -->
-      <div class="exp-photo">
-        <img src="/landing-pages/live-wedding-painting/img/exp-couple.webp" alt="A couple beside a finished landscape painting of their wedding day">
+    <div class="exp-trio">
+      <!-- Real photo: finished Gov Camp mountain cabin painting on easel, same shoot/fence backdrop as the Smithy photo for matching composition -->
+      <div class="exp-photo" style="aspect-ratio: 871 / 1200;">
+        <img src="/landing-pages/live-wedding-painting/img/exp-govcamp-v3.webp" alt="Finished Gov Camp mountain cabin landscape painting on an easel">
       </div>
-      <div class="exp-copy">
-        <h3>A keepsake, not just coverage.</h3>
-        <p>Photographers capture what happened. A live painting captures how it felt. You go home the same night with a finished original: the light, the color, the feeling of your day, held in paint.</p>
-      </div>
-    </div>
-
-    <div class="exp-row">
-      <!-- PLACEHOLDER (AI mockup, not real proof). Replace with a real photo of a painting in a client's home before launch. -->
-      <div class="exp-photo">
-        <img src="/landing-pages/live-wedding-painting/img/exp-insitu.webp" alt="A framed wedding landscape painting hung in a warm home">
-      </div>
-      <div class="exp-copy">
+      <div class="exp-copy exp-copy-center">
         <h3>An heirloom that outlives the trends.</h3>
         <p>Albums get put away. This hangs on your wall. Years from now it is still the first thing people ask about, and still the truest reminder of the day you started your life together.</p>
+      </div>
+      <!-- Real photo: finished Smith Rock painting on easel, portrait crop -->
+      <div class="exp-photo" style="aspect-ratio: 1017 / 1400;">
+        <img src="/landing-pages/live-wedding-painting/img/exp-insitu-v3.webp" alt="Finished Smith Rock landscape painting on an easel, portrait orientation">
       </div>
     </div>
 
@@ -139,14 +144,19 @@
   <section class="section gallery">
     <p class="kicker center">Recent work</p>
     <h2 class="center">A few paintings.</h2>
-    <div class="gallery-grid">
-      <!-- SLOT: gallery-1..6 (swap in Holly's sample paintings) -->
-      <div class="g-item slot" data-label="Painting 1"><span class="slot-note">Sample painting</span></div>
-      <div class="g-item slot" data-label="Painting 2"><span class="slot-note">Sample painting</span></div>
-      <div class="g-item slot" data-label="Painting 3"><span class="slot-note">Sample painting</span></div>
-      <div class="g-item slot" data-label="Painting 4"><span class="slot-note">Sample painting</span></div>
-      <div class="g-item slot" data-label="Painting 5"><span class="slot-note">Sample painting</span></div>
-      <div class="g-item slot" data-label="Painting 6"><span class="slot-note">Sample painting</span></div>
+    <!-- Showcase: big image + static thumbnail strip. Alternates oil wedding paintings and watercolor venue portraits -->
+    <div class="gallery-showcase">
+      <div class="gs-main">
+        <img id="gsMainImg" src="/landing-pages/live-wedding-painting/img/gallery-slide-1.webp" alt="Oil painting, Gov Camp mountain cabin, on an easel">
+      </div>
+      <div class="gs-thumbs">
+        <div class="gs-thumb is-active" onclick="gsSelect(0, this)"><img src="/landing-pages/live-wedding-painting/img/gallery-slide-1.webp" alt="Oil painting, Gov Camp mountain cabin, on an easel"></div>
+        <div class="gs-thumb" onclick="gsSelect(1, this)"><img src="/landing-pages/live-wedding-painting/img/gallery-slide-2.webp" alt="Watercolor venue portrait, Pepa's Farm"></div>
+        <div class="gs-thumb" onclick="gsSelect(2, this)"><img src="/landing-pages/live-wedding-painting/img/gallery-slide-3.webp" alt="Oil painting, House on Metolius, Mt. Hood and river"></div>
+        <div class="gs-thumb" onclick="gsSelect(3, this)"><img src="/landing-pages/live-wedding-painting/img/gallery-slide-4.webp" alt="Watercolor venue portrait"></div>
+        <div class="gs-thumb" onclick="gsSelect(4, this)"><img src="/landing-pages/live-wedding-painting/img/gallery-slide-5.webp" alt="Oil painting, Smith Rock canyon"></div>
+        <div class="gs-thumb" onclick="gsSelect(5, this)"><img src="/landing-pages/live-wedding-painting/img/gallery-slide-6.webp" alt="Watercolor venue portrait"></div>
+      </div>
     </div>
   </section>
 
@@ -154,20 +164,86 @@
   <section class="testimonials">
     <p class="kicker center">Kind words</p>
     <div class="test-grid">
-      <!-- SLOT: real testimonials (do not fabricate; swap in real quotes) -->
-      <figure class="test-card slot-soft">
-        <blockquote>Placeholder for a real quote from a couple. Swap in one line about how the live painting felt on the day.</blockquote>
-        <figcaption>Couple name &middot; Venue</figcaption>
+      <figure class="test-card">
+        <img class="test-avatar" src="/landing-pages/live-wedding-painting/img/testimonial-maria.webp" alt="Maria">
+        <p class="test-prompt">What was it like working with Holly?</p>
+        <blockquote>Holly took the time to ask the right questions to ensure we got what we wanted out of the piece. She asked about perspective, angles, colors, details, size, what we planned to use it for, etc. Working with Holly is a pleasure. She truly cares about each piece she makes and delivering satisfaction throughout the entire process. She is an incredibly talented and thoughtful artist.</blockquote>
+        <figcaption>Maria &middot; wedding venue painting commission</figcaption>
       </figure>
-      <figure class="test-card slot-soft">
-        <blockquote>Placeholder for a second real quote. Ideally one that mentions guests gathering to watch.</blockquote>
-        <figcaption>Couple name &middot; Venue</figcaption>
+      <figure class="test-card">
+        <img class="test-avatar" src="/landing-pages/live-wedding-painting/img/testimonial-colin.webp" alt="Eastern Sierras mountain lake, the scene from Colin's commission">
+        <p class="test-prompt">How do you feel about the finished piece?</p>
+        <blockquote>Holly was able to capture the essence and beauty of a very special part of the eastern sierras. Her work always captures the hidden life behind the moment.</blockquote>
+        <figcaption>Colin &middot; venue painting commission</figcaption>
       </figure>
-      <figure class="test-card slot-soft">
-        <blockquote>Placeholder for a third quote, or a quote from a planner or photographer Holly has worked with.</blockquote>
-        <figcaption>Wedding pro &middot; Company</figcaption>
+      <figure class="test-card">
+        <img class="test-avatar" src="/landing-pages/live-wedding-painting/img/testimonial-megan.webp" alt="Megan">
+        <p class="test-prompt">What was it like working with Holly?</p>
+        <blockquote>Holly is a vessel of empathy and grace. Her ability to transform a thought into hand-crafted memorabilia is a true gift. She has a heart of pure gold.</blockquote>
+        <figcaption>Megan &middot; venue painting commission</figcaption>
       </figure>
     </div>
+  </section>
+
+  <!-- ============ PRICING ============ -->
+  <section class="section pricing" id="pricing">
+    <p class="kicker center">Investment</p>
+    <h2 class="center">Three ways to bring your day to canvas.</h2>
+    <div class="pricing-grid">
+
+      <div class="price-card price-featured">
+        <p class="price-badge">Founder&rsquo;s Offer</p>
+        <p class="price-amount">$800</p>
+        <ul class="price-features">
+          <li>16&times;20 canvas &middot; cotton</li>
+          <li>5&ndash;6 hrs live painting</li>
+          <li>Studio finish + varnish</li>
+          <li>Pre-wedding consultation</li>
+          <li>High-res digital scan</li>
+          <li>2 fine art prints included</li>
+          <li>Local delivery or shipping included</li>
+        </ul>
+        <p class="price-terms">$300 deposit to hold your date. $500 due after the wedding &mdash; and only if you love it. In exchange, I ask for honest feedback throughout, and a review if you think it deserves one.</p>
+        <p class="price-avail">Central Oregon only &middot; 3 spots</p>
+        <a class="btn btn-cta" href="#inquire">Claim a spot</a>
+      </div>
+
+      <div class="price-card">
+        <p class="price-badge">Signature</p>
+        <p class="price-amount">$2,000</p>
+        <ul class="price-features">
+          <li>16&times;20 canvas &middot; cotton</li>
+          <li>5&ndash;6 hrs live painting</li>
+          <li>Studio finish + varnish</li>
+          <li>Pre-wedding consultation</li>
+          <li>High-res digital scan</li>
+          <li>Local delivery &middot; within 1hr of Bend</li>
+        </ul>
+        <p class="price-terms">40% deposit to book, 60% due 30 days before your wedding.</p>
+        <p class="price-avail">Travel available, case-by-case</p>
+        <a class="btn btn-ghost" href="#inquire">Check your date</a>
+      </div>
+
+      <div class="price-card">
+        <p class="price-badge">Heirloom</p>
+        <p class="price-amount">$2,700</p>
+        <ul class="price-features">
+          <li>18&times;24 canvas &middot; archival linen</li>
+          <li>5&ndash;7 hrs live painting</li>
+          <li>Studio finish + varnish</li>
+          <li>Pre-wedding consultation</li>
+          <li>High-res digital scan</li>
+          <li>2 fine art prints included</li>
+          <li>Process video of the painting coming to life</li>
+          <li>Local delivery &middot; within 1hr of Bend</li>
+        </ul>
+        <p class="price-terms">40% deposit to book, 60% due 30 days before your wedding.</p>
+        <p class="price-avail">Travel available, case-by-case</p>
+        <a class="btn btn-ghost" href="#inquire">Check your date</a>
+      </div>
+
+    </div>
+    <p class="center price-timeline">Every package includes a 4&ndash;6 week delivery window after your wedding day.</p>
   </section>
 
   <!-- ============ WEDDING PROS (partner section) ============ -->
@@ -187,7 +263,7 @@
         </div>
         <div class="pro-col">
           <h4>Venues</h4>
-          <p>Get on your preferred-vendor list and I will paint your venue as a gift, yours to display.</p>
+          <p>Get on your preferred-vendor list and I could paint a custom portrait of your venue, an opportunity for prints and gift-shop items.</p>
         </div>
       </div>
       <p class="center"><a class="btn btn-ghost" href="#inquire">Partner with Holly</a></p>
@@ -199,7 +275,8 @@
     <div class="inquire-inner">
       <p class="kicker center">Check your date</p>
       <h2 class="center">Tell me about your day.</h2>
-      <p class="center inquire-sub">Dates are limited. Starting at <strong>$X,XXX</strong> <span class="slot-inline">(set price)</span>. Send a few details and I will get back to you personally.</p>
+      <p class="center inquire-sub">Dates are limited. Packages start at <strong>$800</strong> &mdash; <a href="#pricing">see full pricing</a>. Send a few details and I will get back to you personally.</p>
+      <p class="center inquire-note">Good to know: this is a landscape/atmosphere painting of your day, not a portrait of you and your partner. Tell me the details you'd like included below.</p>
 
       <form name="wedding-inquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="inquiry-form" action="/landing-pages/live-wedding-painting/#thanks">
         <input type="hidden" name="form-name" value="wedding-inquiry">
@@ -233,8 +310,8 @@
           </select>
         </div>
         <div class="field">
-          <label for="message">Anything you'd like me to know</label>
-          <textarea id="message" name="message" rows="4" placeholder="Your vibe, your venue, what you're dreaming of."></textarea>
+          <label for="message">Details you'd like included in the painting</label>
+          <textarea id="message" name="message" rows="4" placeholder="The arch, the string lights, a mountain view, the tent at golden hour &mdash; anything you're dreaming of."></textarea>
         </div>
         <button class="btn btn-cta" type="submit">Send inquiry</button>
       </form>
@@ -246,10 +323,19 @@
     <p class="foot-name">Holly Di Cecco</p>
     <p class="foot-meta">Live wedding painting &middot; Based in Bend, Oregon &middot; Available for destination weddings</p>
     <p class="foot-links">
-      <a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.instagram.com/hollydicecco/" target="_blank" rel="noopener">Instagram</a>
       <a href="/">hollucinations.com</a>
     </p>
   </footer>
+
+  <script>
+    function gsSelect(i, thumbEl) {
+      document.getElementById('gsMainImg').src = thumbEl.querySelector('img').src;
+      document.getElementById('gsMainImg').alt = thumbEl.querySelector('img').alt;
+      document.querySelectorAll('.gs-thumb').forEach(function (t) { t.classList.remove('is-active'); });
+      thumbEl.classList.add('is-active');
+    }
+  </script>
 
 </body>
 </html>
