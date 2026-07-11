@@ -72,26 +72,29 @@ img, video { display: block; max-width: 100%; }
   text-align: center;
   padding: var(--space-xl) var(--container-padding) var(--space-xl);
 }
-.hero .eyebrow { display: block; margin-bottom: var(--space-md); }
-.wordmark {
-  font-size: var(--text-4xl);
-  font-weight: 300;
-  letter-spacing: 0.06em;
-  line-height: 1;
+.hero-headline {
+  display: block;
 }
-.hero-tag {
+.hero-headline-main {
+  display: block;
   font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: clamp(2.25rem, 1.1rem + 5vw, 5rem);
+  line-height: 1.08;
+  letter-spacing: 0.005em;
+}
+.hero-headline-main em {
   font-style: italic;
-  font-size: var(--text-xl);
+  color: #7a5a2e;
+}
+.hero-headline-sub {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: var(--text-lg);
+  letter-spacing: 0.02em;
   color: var(--color-text-light);
   margin-top: var(--space-sm);
-}
-.hero-clarify {
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
-  max-width: 46ch;
-  margin: var(--space-sm) auto 0;
 }
 
 .triptych {
