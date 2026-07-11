@@ -277,10 +277,12 @@
   <!-- ============ INQUIRY / BOOKING ============ -->
   <section class="section inquire" id="inquire">
     <div class="inquire-inner">
-      <p class="kicker center">Check your date</p>
-      <h2 class="center">Tell me about your day.</h2>
-      <p class="center inquire-sub">Dates are limited. Packages start at <strong>$800</strong> &mdash; <a href="#pricing">see full pricing</a>. Send a few details and I will get back to you personally.</p>
-      <p class="center inquire-note">Good to know: this is a landscape/atmosphere painting of your day, not a portrait of you and your partner. Tell me the details you'd like included below.</p>
+      <div id="wedding-inquiry-intro">
+        <p class="kicker center">Check your date</p>
+        <h2 class="center">Tell me about your day.</h2>
+        <p class="center inquire-sub">Dates are limited. Packages start at <strong>$800</strong> &mdash; <a href="#pricing">see full pricing</a>. Send a few details and I will get back to you personally.</p>
+        <p class="center inquire-note">Good to know: this is a landscape/atmosphere painting of your day, not a portrait of you and your partner. Tell me the details you'd like included below.</p>
+      </div>
 
       <form name="wedding-inquiry" id="wedding-inquiry-form" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="inquiry-form" action="/landing-pages/live-wedding-painting/#thanks">
         <input type="hidden" name="form-name" value="wedding-inquiry">
@@ -334,7 +336,7 @@
     <p class="foot-meta">Live wedding painting &middot; Based in Bend, Oregon &middot; Available for destination weddings</p>
     <p class="foot-links">
       <a href="https://www.instagram.com/hollydicecco/" target="_blank" rel="noopener">Instagram</a>
-      <a href="/">hollucinations.com</a>
+      <a href="https://hollucinations.com/" target="_blank" rel="noopener">hollucinations.com</a>
     </p>
   </footer>
 
@@ -370,7 +372,8 @@
           body: new URLSearchParams(new FormData(form)).toString()
         }).then(function (res) {
           if (!res.ok) throw new Error('form submission failed');
-          form.hidden = true;
+          document.getElementById('wedding-inquiry-intro').hidden = true;
+          form.style.display = 'none';
           document.getElementById('wedding-inquiry-thanks').hidden = false;
         }).catch(function () {
           form.submit();
