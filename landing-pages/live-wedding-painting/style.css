@@ -163,7 +163,7 @@ img, video { display: block; max-width: 100%; }
 .pos-visual { width: 100%; max-width: var(--max-width); margin: 0 auto; aspect-ratio: 16 / 7; border-radius: var(--radius-sm); min-height: 0; overflow: hidden; }
 
 /* ---------- populated photos fill their slot boxes ---------- */
-.meet-photo, .exp-photo { overflow: hidden; }
+.meet-photo, .exp-photo { overflow: hidden; width: 100%; }
 .meet-photo { aspect-ratio: 4 / 5; min-height: 0; }
 .exp-photo { aspect-ratio: 3 / 2; min-height: 0; }
 .meet-photo img, .exp-photo img, .pos-visual img {

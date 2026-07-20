@@ -189,87 +189,13 @@
     </div>
   </section>
 
-  <!-- ============ PRICING ============ -->
-  <section class="section pricing" id="pricing">
-    <p class="kicker center">Investment</p>
-    <h2 class="center">Three ways to bring your day to canvas.</h2>
-    <div class="pricing-grid">
-
-      <div class="price-card price-featured">
-        <p class="price-badge">Founder&rsquo;s Offer</p>
-        <p class="price-amount">$800</p>
-        <ul class="price-features">
-          <li>16&times;20 canvas &middot; cotton</li>
-          <li>5&ndash;6 hrs live painting</li>
-          <li>Studio finish + varnish</li>
-          <li>Pre-wedding consultation</li>
-          <li>High-res digital scan</li>
-          <li>2 fine art prints included</li>
-          <li>Local delivery or shipping included</li>
-        </ul>
-        <p class="price-terms">$300 deposit to hold your date. $500 due after the wedding &mdash; and only if you love it. In exchange, I ask for honest feedback throughout, and a review if you think it deserves one.</p>
-        <p class="price-avail">Central Oregon only &middot; 3 spots</p>
-        <a class="btn btn-cta" href="#inquire">Claim a spot</a>
-      </div>
-
-      <div class="price-card">
-        <p class="price-badge">Signature</p>
-        <p class="price-amount">$2,000</p>
-        <ul class="price-features">
-          <li>16&times;20 canvas &middot; cotton</li>
-          <li>5&ndash;6 hrs live painting</li>
-          <li>Studio finish + varnish</li>
-          <li>Pre-wedding consultation</li>
-          <li>High-res digital scan</li>
-          <li>Local delivery &middot; within 1hr of Bend</li>
-        </ul>
-        <p class="price-terms">40% deposit to book, 60% due 30 days before your wedding.</p>
-        <p class="price-avail">Travel available, case-by-case</p>
-        <a class="btn btn-ghost" href="#inquire">Check your date</a>
-      </div>
-
-      <div class="price-card">
-        <p class="price-badge">Heirloom</p>
-        <p class="price-amount">$2,700</p>
-        <ul class="price-features">
-          <li>18&times;24 canvas &middot; archival linen</li>
-          <li>5&ndash;7 hrs live painting</li>
-          <li>Studio finish + varnish</li>
-          <li>Pre-wedding consultation</li>
-          <li>High-res digital scan</li>
-          <li>2 fine art prints included</li>
-          <li>Process video of the painting coming to life</li>
-          <li>Local delivery &middot; within 1hr of Bend</li>
-        </ul>
-        <p class="price-terms">40% deposit to book, 60% due 30 days before your wedding.</p>
-        <p class="price-avail">Travel available, case-by-case</p>
-        <a class="btn btn-ghost" href="#inquire">Check your date</a>
-      </div>
-
-    </div>
-    <p class="center price-timeline">Every package includes a 4&ndash;6 week delivery window after your wedding day.</p>
-  </section>
-
   <!-- ============ WEDDING PROS (partner section) ============ -->
   <section class="section pros">
     <div class="pros-inner">
-      <p class="kicker center">For planners &amp; photographers</p>
+      <p class="kicker center">For planners, photographers &amp; venues</p>
       <h2 class="center">Give your couples something no one else offers.</h2>
       <p class="pros-lede center">Live painting is the kind of detail couples remember and tell their friends about. If you plan or photograph weddings, partnering with me is simple, and it works in your favor.</p>
-      <div class="pros-grid">
-        <div class="pro-col">
-          <h4>Planners &amp; coordinators</h4>
-          <p>Add a live-painting experience to your packages. You look like a hero for suggesting it, and I take good care of the planners who send couples my way.</p>
-        </div>
-        <div class="pro-col">
-          <h4>Photographers</h4>
-          <p>It gives you something new to shoot, the painting-in-progress becomes some of your best content of the night, and referrals go both ways.</p>
-        </div>
-        <div class="pro-col">
-          <h4>Venues</h4>
-          <p>Get on your preferred-vendor list and I could paint a custom portrait of your venue, an opportunity for prints and gift-shop items.</p>
-        </div>
-      </div>
+      <p class="pros-lede center">Partner with me directly and both you and your clients gain access to an exclusive arrangement you won&rsquo;t find anywhere else. We set the terms, and how you offer it to your network is your call. Every couple who books through you steps into the VIP package at no extra cost to anyone.</p>
       <p class="center"><a class="btn btn-ghost" href="#inquire">Partner with Holly</a></p>
     </div>
   </section>
@@ -280,7 +206,7 @@
       <div id="wedding-inquiry-intro">
         <p class="kicker center">Check your date</p>
         <h2 class="center">Tell me about your day.</h2>
-        <p class="center inquire-sub">Dates are limited. Packages start at <strong>$800</strong> &mdash; <a href="#pricing">see full pricing</a>. Send a few details and I will get back to you personally.</p>
+        <p class="center inquire-sub">Dates are limited. Send a few details and I will get back to you personally.</p>
         <p class="center inquire-note">Good to know: this is a landscape/atmosphere painting of your day, not a portrait of you and your partner. Tell me the details you'd like included below.</p>
       </div>
 
@@ -295,6 +221,16 @@
         <div class="field">
           <label for="email">Email</label>
           <input id="email" name="email" type="email" required>
+        </div>
+        <div class="field">
+          <label for="who">Who are you?</label>
+          <select id="who" name="who_are_you">
+            <option value="Couple Getting Married">Couple Getting Married</option>
+            <option value="Venue Coordinator">Venue Coordinator</option>
+            <option value="Wedding Planner">Wedding Planner</option>
+            <option value="Photographer">Photographer</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
         <div class="row-2">
           <div class="field">
@@ -314,12 +250,11 @@
             <option value="Elopement">Elopement</option>
             <option value="Corporate event">Corporate event</option>
             <option value="Other">Other</option>
-            <option value="Planner / photographer partnership">I'm a planner or photographer</option>
           </select>
         </div>
         <div class="field">
-          <label for="message">Details you'd like included in the painting</label>
-          <textarea id="message" name="message" rows="4" placeholder="The arch, the string lights, a mountain view, the tent at golden hour &mdash; anything you're dreaming of."></textarea>
+          <label for="message">Quick description of inquiry</label>
+          <textarea id="message" name="message" rows="4" placeholder="I would like to hear more about partnering with you!"></textarea>
         </div>
         <button class="btn btn-cta" type="submit">Send inquiry</button>
       </form>
